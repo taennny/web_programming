@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeetMate - 자료 공유</title>
+    <link rel="stylesheet" href="meetmate.css" />
+    <script src="meetmate.js"></script>
+    <style>
+      .content {
+        flex: 1;
+        padding: 48px;
+        margin: 0 auto;
+      }
+      .material-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 16px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .card-title {
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .delete-btn {
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        color: #999;
+      }
+
+      .card-meta {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .dday {
+        font-weight: bold;
+        color: #f36856;
+      }
+
+      .link-btn {
+        text-align: center;
+        display: inline-block;
+        background-color: #f8f9fa;
+        color: #333;
+        text-decoration: none;
+        padding: 8px 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 13px;
+        transition: all 0.2s ease;
+      }
+
+      .link-btn:hover {
+        background-color: #e9ecef;
+        border-color: #bbb;
+        color: #222;
+      }
+      .card-title-wrapper {
+        text-align: center;
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .card-desc {
+        font-size: 13px;
+        color: #555;
+        margin: 0;
+      }
+      .drive-upload-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: bold;
+        border-radius: 6px;
+        background-color: #f1f3f5;
+        border: 1px solid #ccc;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: #333;
+      }
+      .drive-upload-btn:hover {
+        background-color: #e2e6ea;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="top-buttons">
+        <button onclick="settings()">설정</button>
+      </div>
+    </header>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
+        </li>
+        <li>
+          <a href="group.html"><span>📅</span>일정 조율</a>
+        </li>
+        <li>
+          <a href="map.html"><span>📍</span>회의 장소</a>
+        </li>
+        <li class="active">
+          <a href="file-share.html"><span>📎</span>자료 공유</a>
+        </li>
+        <li>
+          <a href="group-result.html"><span>📋</span>전체 요약</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="main-container">
+      <!-- content -->
+      <div class="content">
+        <h2>📎 자료 공유</h2>
+        <a
+          href="https://drive.google.com/drive/my-drive"
+          target="_blank"
+          class="primary drive-upload-btn"
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+          "
+        >
+          <span style="font-size: 20px">📤</span>
+          <span>Google Drive에 자료 업로드</span>
+        </a>
+
+        <form
+          id="uploadForm"
+          class="form"
+          style="
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+          "
+        >
+          <input
+            type="text"
+            id="title"
+            placeholder="자료 제목"
+            required
+            style="flex: 1 1 100%; padding: 10px"
+          />
+          <input
+            type="date"
+            id="deadline"
+            required
+            style="flex: 1 1 30%; padding: 10px"
+          />
+          <input
+            type="url"
+            id="link"
+            placeholder="공유 링크 (https://drive.google.com/...)"
+            required
+            style="flex: 1 1 65%; padding: 10px"
+          />
+          <input
+            type="text"
+            id="comment"
+            placeholder="자료 설명 (선택)"
+            style="flex: 1 1 100%; padding: 10px"
+          />
+          <button type="submit" class="primary" style="margin-top: 8px">
+            등록
+          </button>
+        </form>
+
+        <div
+          id="fileList"
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 8px;
+            padding-bottom: 8px;
+          "
+        ></div>
+      </div>
+      <!-- 오른쪽 사이드 바 -->
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: ...</div>
+          <div id="current-time">🕒 현재 시간: ...</div>
+        </div>
+        <div class="card motivation">
+          🖤 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+        <div class="card">
+          <button
+            onclick="toggleDarkMode()"
+            class="primary"
+            style="width: 100%"
+          >
+            🌙 다크모드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // D-DAY 계산 함수
+      function getDdayLabel(deadlineStr) {
+        const today = new Date();
+        const deadline = new Date(deadlineStr);
+
+        const todayDate = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate()
+        );
+        const deadlineDate = new Date(
+          deadline.getFullYear(),
+          deadline.getMonth(),
+          deadline.getDate()
+        );
+
+        const diffTime = deadlineDate - todayDate;
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 0) {
+          return `D-${diffDays}`;
+        } else if (diffDays === 0) {
+          return `D-DAY`;
+        } else {
+          return `D+${Math.abs(diffDays)}`;
+        }
+      }
+
+      const form = document.getElementById("uploadForm");
+      const fileList = document.getElementById("fileList");
+
+      let files = JSON.parse(localStorage.getItem("drive_links") || "[]");
+
+      function saveFiles() {
+        localStorage.setItem("drive_links", JSON.stringify(files));
+      }
+
+      function renderFiles() {
+        fileList.innerHTML = "";
+        files.forEach((file, index) => {
+          const ddayLabel = getDdayLabel(file.deadline);
+          const card = document.createElement("div");
+          card.className = "material-card";
+
+          card.innerHTML = `
+      <div class="card-header">
+        <div class="card-title-wrapper">
+        <h3 class="card-title">🗂 ${file.title}</h3>
+      </div>
+        <button class="delete-btn" onclick="deleteFile(${index})">❌</button>
+      </div>
+      <p class="card-meta">📅 마감: ${
+        file.deadline
+      } <span class="dday">(${ddayLabel})</span></p>
+
+      <a href="${
+        file.link
+      }" target="_blank" class="link-btn">🔗 Drive 링크 열기</a>
+      <p class="card-desc">📝 ${file.comment || "설명 없음"}</p>
+    `;
+          fileList.appendChild(card);
+        });
+      }
+
+      // 전역 등록
+      window.deleteFile = function (i) {
+        if (confirm("이 자료를 삭제할까요?")) {
+          files.splice(i, 1);
+          saveFiles();
+          renderFiles();
+        }
+      };
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const title = document.getElementById("title").value;
+        const deadline = document.getElementById("deadline").value;
+        const link = document.getElementById("link").value;
+        const comment = document.getElementById("comment").value;
+        //D-day 계산
+
+        files.push({ title, deadline, link, comment });
+
+        saveFiles();
+        renderFiles();
+        form.reset();
+      });
+
+      renderFiles();
+    </script>
+  </body>
+</html>

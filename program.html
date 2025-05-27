@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>역할 분담</title>
+    <link rel="stylesheet" href="meetmate.css" />
+    <style>
+      .role-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 32px;
+      }
+      .role-table th,
+      .role-table td {
+        border: 1px solid #ccc;
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .role-table input[type="text"],
+      .role-table input[type="date"] {
+        padding: 6px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .todo-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .todo-item input[type="text"] {
+        flex: 1;
+      }
+      .add-todo-btn,
+      .add-row-btn {
+        margin-top: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="top-buttons">
+        <button onclick="settings()">설정</button>
+      </div>
+    </header>
+    <nav class="topnav">
+      <ul>
+        <li class="active"><a href="program.html">🧑‍🤝‍🧑 역할 분담</a></li>
+        <li><a href="group.html">📅 일정 조율</a></li>
+        <li><a href="map.html">📍 회의 장소</a></li>
+        <li><a href="file-share.html">📎 자료 공유</a></li>
+        <li><a href="group-result.html">📋 전체 요약</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-container">
+      <div class="content">
+        <h2>역할 분담</h2>
+        <p>팀원 역할과 마감기한을 정하고 관리할 수 있습니다.</p>
+
+        <table class="role-table" id="role-table">
+          <thead>
+            <tr>
+              <th>팀원 이름</th>
+              <th>맡은 역할</th>
+              <th>할 일 목록</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" placeholder="홍길동" /></td>
+              <td><input type="text" placeholder="역할 입력" /></td>
+              <td>
+                <div class="todo-list">
+                  <div class="todo-item">
+                    <input type="checkbox" />
+                    <input type="text" placeholder="작업 내용" />
+                    <input type="date" onchange="updateTodoDday(this)" />
+                    <span class="todo-dday"></span>
+                  </div>
+                </div>
+                <button class="add-todo-btn" onclick="addTodo(this)">
+                  + 할 일 추가
+                </button>
+              </td>
+              <td><input type="text" placeholder="메모를 입력하세요" /></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="add-row-btn" onclick="addRow()">+ 팀원 추가</button>
+      </div>
+
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜:</div>
+          <div id="current-time">🕒 현재 시간:</div>
+        </div>
+        <div class="card motivation">
+          🖤 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+        <div class="card">
+          <button
+            onclick="toggleDarkMode()"
+            class="primary"
+            style="width: 100%"
+          >
+            🌙 다크모드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function updateTodoDday(input) {
+        const date = new Date(input.value);
+        const today = new Date();
+        const diff = Math.ceil((date - today) / (1000 * 60 * 60 * 24));
+        const dday = diff >= 0 ? `D-${diff}` : `D+${Math.abs(diff)}`;
+        input.nextElementSibling.textContent = dday;
+      }
+
+      function addRow() {
+        const tbody = document.querySelector("#role-table tbody");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td><input type="text" placeholder="팀원 이름" /></td>
+        <td><input type="text" placeholder="역할 입력" /></td>
+        <td>
+          <div class="todo-list">
+            <div class="todo-item">
+              <input type="checkbox" />
+              <input type="text" placeholder="작업 내용" />
+              <input type="date" onchange="updateTodoDday(this)" />
+              <span class="todo-dday"></span>
+            </div>
+          </div>
+          <button class="add-todo-btn" onclick="addTodo(this)">+ 할 일 추가</button>
+        </td>
+        <td><input type="text" placeholder="메모를 입력하세요" /></td>
+        
+      `;
+        tbody.appendChild(row);
+      }
+
+      function addTodo(button) {
+        const list = button.previousElementSibling;
+        const item = document.createElement("div");
+        item.className = "todo-item";
+        item.innerHTML = `
+        <input type="checkbox" />
+        <input type="text" placeholder="작업 내용" />
+        <input type="date" onchange="updateTodoDday(this)" />
+        <span class="todo-dday"></span>
+      `;
+        list.appendChild(item);
+      }
+    </script>
+  </body>
+</html>

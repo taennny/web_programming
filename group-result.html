@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>전체 요약</title>
+    <link rel="stylesheet" href="meetmate.css" />
+    <style>
+      .section {
+        margin-bottom: 40px;
+      }
+      .section h3 {
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+      .card {
+        border: 1px solid #ddd;
+        background: #fff;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+      .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .summary-table th,
+      .summary-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      .link-button {
+        margin-top: 8px;
+        display: inline-block;
+        padding: 6px 12px;
+        background: #eee;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="top-buttons">
+        <button onclick="settings()">설정</button>
+      </div>
+    </header>
+
+    <nav class="topnav">
+      <ul>
+        <li><a href="program.html">🧑‍🤝‍🧑 역할 분담</a></li>
+        <li><a href="group.html">📅 일정 조율</a></li>
+        <li><a href="map.html">📍 회의 장소</a></li>
+        <li><a href="file-share.html">📎 자료 공유</a></li>
+        <li class="active"><a href="group-result.html">📋 전체 요약</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-container">
+      <div class="content">
+        <h2>📋 선택 결과 요약</h2>
+
+        <div class="section">
+          <h3>🧑‍🤝‍🧑 역할 분담</h3>
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>팀원</th>
+                <th>역할</th>
+                <th>할 일</th>
+                <th>D-day</th>
+                <th>메모</th>
+              </tr>
+            </thead>
+            <tbody id="role-summary">
+              <tr>
+                <td colspan="5">데이터 없음</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="link-button" href="program.html">역할 수정하러 가기</a>
+        </div>
+
+        <div class="section">
+          <h3>🗓️ 회의 일정</h3>
+          <div class="card" id="schedule-summary">선택된 시간이 없습니다.</div>
+          <a class="link-button" href="group.html">일정 수정하러 가기</a>
+        </div>
+
+        <div class="section">
+          <h3>📍 회의 장소</h3>
+          <div class="card" id="location-summary">
+            선택된 회의 장소가 없습니다.
+          </div>
+          <a class="link-button" href="map.html">회의 장소 선택하러 가기</a>
+        </div>
+
+        <div class="section">
+          <h3>📎 자료 공유</h3>
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>제목</th>
+                <th>날짜</th>
+                <th>링크</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody id="file-summary">
+              <tr>
+                <td colspan="4">등록된 자료가 없습니다.</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="link-button" href="file-share.html">자료 추가하러 가기</a>
+        </div>
+      </div>
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: -</div>
+          <div id="current-time">🕒 현재 시간: -</div>
+        </div>
+        <div class="card motivation">
+          🧡 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+        <div class="card">
+          <button
+            onclick="toggleDarkMode()"
+            class="primary"
+            style="width: 100%"
+          >
+            🌙 다크모드
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

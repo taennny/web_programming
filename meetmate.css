@@ -1,0 +1,177 @@
+/* MeetMate 공통 스타일 */
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Pretendard", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 */
+header {
+  background-color: #fff;
+  padding: 30px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* 메인 레이아웃 */
+.main-container {
+  display: flex;
+  align-items: flex-start;
+}
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* 설정 버튼 */
+.top-buttons button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+.top-buttons button:hover {
+  background-color: #ddd;
+}
+
+/*topnav*/
+.topnav {
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+}
+.topnav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.topnav li {
+  margin: 0;
+}
+.topnav a {
+  display: block;
+  padding: 14px 24px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+.topnav a:hover,
+.topnav .active a {
+  background-color: #f5f7fa;
+  font-weight: 700;
+}
+
+/* 설정 버튼 */
+.top-buttons button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+.top-buttons button:hover {
+  background-color: #ddd;
+}
+
+/* 오른쪽 사이드 패널 */
+.side-panel {
+  flex-shrink: 0;
+  width: 280px;
+  padding: 24px;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.side-panel .card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.side-panel .motivation {
+  background-color: #ffffff;
+  color: #0d0d0d;
+  font-weight: 600;
+  border-left: 4px solid #888888;
+}
+
+/* 버튼 스타일 */
+button.primary {
+  background-color: #ffffff;
+  color: #484848;
+  border: 1px solid #484848;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+button.primary:hover {
+  background-color: #f0f4ff;
+  color: #3366cc;
+}
+
+/* 다크모드 */
+body.dark {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+body.dark header,
+body.dark .topnav,
+body.dark .side-panel,
+body.dark .card,
+body.dark .content {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+body.dark input[type="text"],
+body.dark textarea {
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  color: #f0f0f0;
+}
+.topnav a {
+  color: inherit; /* 상위 li의 색상 계승 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.topnav a:visited {
+  color: inherit; /* 방문 후 보라색 방지 */
+}
+
+.topnav a:hover {
+  text-decoration: none; /* hover 시 밑줄도 제거 */
+  color: inherit;
+}

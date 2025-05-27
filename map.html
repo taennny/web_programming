@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeetMate - 회의 장소</title>
+    <script
+      async
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places&callback=initMap"
+    ></script>
+    <link rel="stylesheet" href="meetmate.css" />
+    <script src="meetmate.js"></script>
+    <style>
+      .content {
+        flex: 1;
+        padding: 48px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .content h2 {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+
+      .intro {
+        text-align: center;
+        font-size: 15px;
+        color: #666;
+        margin-bottom: 32px;
+      }
+
+      .meeting-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+
+      .meeting-option label {
+        margin-right: 16px;
+        font-size: 16px;
+      }
+
+      #map {
+        width: 100%;
+        height: 400px;
+        margin-top: 16px;
+        display: none;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      .zoom-actions {
+        display: none;
+        margin-top: 16px;
+      }
+
+      .zoom-actions input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+
+      .tip-card {
+        background: #eaf4ff;
+        border-left: 4px solid #4f91ff;
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        color: #3366cc;
+        margin-top: 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="top-buttons">
+        <button onclick="settings()">설정</button>
+      </div>
+    </header>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
+        </li>
+        <li>
+          <a href="group.html"><span>📅</span>일정 조율</a>
+        </li>
+        <li class="active">
+          <a href="map.html"><span>📍</span>회의 장소</a>
+        </li>
+        <li>
+          <a href="file-share.html"><span>📎</span>자료 공유</a>
+        </li>
+        <li>
+          <a href="group-result.html"><span>📋</span>전체 요약</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="main-container">
+      <div class="content">
+        <h2>📍 회의 장소 설정</h2>
+        <p class="intro">
+          원하는 회의 방식을 선택하고, 회의 참여 또는 장소를 쉽게 설정하세요.
+        </p>
+
+        <div class="meeting-card">
+          <div class="meeting-option">
+            <p><strong>📝 회의 방식 선택</strong></p>
+            <label
+              ><input type="radio" name="meetingType" value="offline" />
+              대면</label
+            >
+            <label
+              ><input type="radio" name="meetingType" value="online" />
+              비대면</label
+            >
+          </div>
+
+          <!-- Zoom 전용 기능 -->
+          <div class="zoom-actions" id="zoomActions">
+            <button class="primary" onclick="openZoomCreation()">
+              ➕ Zoom 회의방 만들기
+            </button>
+            <button class="primary" onclick="showJoinSection()">
+              🔗 Zoom 회의방 참여하기
+            </button>
+
+            <div id="zoomJoinSection" style="margin-top: 12px; display: none">
+              <input
+                type="text"
+                id="zoomJoinLink"
+                placeholder="Zoom 회의 링크 입력"
+              />
+              <button
+                class="primary"
+                style="margin-top: 8px"
+                onclick="joinZoomMeeting()"
+              >
+                📞 회의 참여
+              </button>
+            </div>
+          </div>
+
+          <!-- 대면용 지도 -->
+          <div id="map"></div>
+        </div>
+
+        <!-- 안내 TIP -->
+        <div class="tip-card">
+          <strong>📌 TIP</strong><br />
+          - Zoom은 로그인 상태에서 이용하면 더 편리해요.<br />
+          - 대면 회의는 스터디카페, 도서관 등 원하는 장소를 직접 선택할 수
+          있어요.<br />
+          - 위치 권한을 허용하면 주변 장소 검색이 더 정확해져요.
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: -</div>
+          <div id="current-time">🕒 현재 시간: -</div>
+        </div>
+        <div class="card motivation">
+          🧡 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+        <div class="card">
+          <button
+            onclick="toggleDarkMode()"
+            class="primary"
+            style="width: 100%"
+          >
+            🌙 다크모드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 회의 방식 선택
+      document
+        .querySelectorAll('input[name="meetingType"]')
+        .forEach((radio) => {
+          radio.addEventListener("change", function () {
+            const zoomBox = document.getElementById("zoomActions");
+            const mapEl = document.getElementById("map");
+
+            if (this.value === "online") {
+              zoomBox.style.display = "block";
+              mapEl.style.display = "none";
+            } else {
+              zoomBox.style.display = "none";
+              mapEl.style.display = "block";
+              initMap();
+            }
+          });
+        });
+
+      // 지도
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 37.5665, lng: 126.978 },
+          zoom: 14,
+        });
+
+        const service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(
+          {
+            location: map.getCenter(),
+            radius: 1500,
+            keyword: "스터디카페",
+          },
+          (results, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+              results.forEach((place) => {
+                new google.maps.Marker({
+                  map,
+                  position: place.geometry.location,
+                });
+              });
+            }
+          }
+        );
+      }
+
+      // Zoom 기능
+      function openZoomCreation() {
+        window.open("https://zoom.us/start/videomeeting", "_blank");
+      }
+
+      function showJoinSection() {
+        document.getElementById("zoomJoinSection").style.display = "block";
+      }
+
+      function joinZoomMeeting() {
+        const link = document.getElementById("zoomJoinLink").value.trim();
+        if (!link.startsWith("http")) {
+          alert("유효한 Zoom 회의 링크를 입력해주세요.");
+          return;
+        }
+        window.open(link, "_blank");
+      }
+    </script>
+  </body>
+</html>

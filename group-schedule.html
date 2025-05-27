@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MeetMate 시간 조율</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="meetmate.css" />
+    <script src="meetmate.js"></script>
+    <style>
+      .content {
+        flex: 1;
+        padding: 48px;
+        margin: 0 auto;
+      }
+      .schedule-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .row {
+        display: flex;
+      }
+      .row div {
+        width: 60px;
+        height: 36px;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 13px;
+      }
+      .cell {
+        cursor: pointer;
+        background-color: #f5f5f5;
+      }
+      .cell:hover {
+        background-color: #e0e0e0;
+      }
+      .cell.selected {
+        background-color: #80d68a;
+      }
+      .time-col {
+        font-weight: bold;
+        background-color: #f0f0f0;
+      }
+      .day-header {
+        background-color: #f0f0f0;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="top-buttons">
+        <button onclick="settings()">설정</button>
+      </div>
+    </header>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
+        </li>
+        <li class="active">
+          <a href="group.html"><span>📅</span>일정 조율</a>
+        </li>
+        <li>
+          <a href="map.html"><span>📍</span>회의 장소</a>
+        </li>
+        <li>
+          <a href="file-share.html"><span>📎</span>자료 공유</a>
+        </li>
+        <li>
+          <a href="group-result.html"><span>📋</span>전체 요약</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="main-container">
+      <div class="content">
+        <h2 style="text-align: center">🕓 그룹 시간 선택</h2>
+        <p style="text-align: center">
+          그룹 코드: <strong>13sd4a1</strong> | 참여자: <strong>강태윤</strong>
+        </p>
+
+        <div class="schedule-grid" id="schedule-grid" style="margin-top: 32px">
+          <div class="row">
+            <div></div>
+            <div class="day-header">일</div>
+            <div class="day-header">월</div>
+            <div class="day-header">화</div>
+            <div class="day-header">수</div>
+            <div class="day-header">목</div>
+            <div class="day-header">금</div>
+            <div class="day-header">토</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px">
+          <button class="primary" onclick="submitSelection()">
+            ✅ 선택 완료
+          </button>
+        </div>
+      </div>
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: -</div>
+          <div id="current-time">🕒 현재 시간: -</div>
+        </div>
+        <div class="card motivation">
+          🧡 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+        <div class="card">
+          <button
+            onclick="toggleDarkMode()"
+            class="primary"
+            style="width: 100%"
+          >
+            🌙 다크모드
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const grid = document.getElementById("schedule-grid");
+      const days = ["일", "월", "화", "수", "목", "금", "토"];
+      for (let hour = 9; hour <= 22; hour++) {
+        const row = document.createElement("div");
+        row.className = "row";
+        const time = `${hour.toString().padStart(2, "0")}:00`;
+        row.innerHTML =
+          `<div class="time-col">${time}</div>` +
+          days
+            .map(
+              (day) =>
+                `<div class="cell" data-day="${day}" data-time="${time}"></div>`
+            )
+            .join("");
+        grid.appendChild(row);
+      }
+
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("cell")) {
+          e.target.classList.toggle("selected");
+        }
+      });
+
+      function submitSelection() {
+        const selected = [...document.querySelectorAll(".cell.selected")].map(
+          (cell) => ({
+            day: cell.dataset.day,
+            time: cell.dataset.time,
+          })
+        );
+
+        if (selected.length === 0) {
+          alert("하나 이상의 시간을 선택해주세요.");
+          return;
+        }
+
+        localStorage.setItem("selectedTime", JSON.stringify(selected));
+
+        const params = new URLSearchParams(location.search);
+        const code = params.get("code");
+        const user = params.get("user");
+
+        if (!code || !user) {
+          alert("그룹 코드 또는 사용자 정보가 누락되었습니다.");
+          return;
+        }
+
+        location.href = `group-schedule-result.html?code=${code}&user=${encodeURIComponent(
+          user
+        )}`;
+      }
+
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+      }
+
+      function settings() {
+        alert("설정 페이지로 이동합니다.");
+      }
+    </script>
+  </body>
+</html>

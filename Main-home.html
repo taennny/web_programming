@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MeetMate 홈</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="meetmate.css" />
+    <script src="meetmate.js"></script>
+  </head>
+  <body>
+    <header
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 24px;
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+      "
+    >
+      <h1 style="margin: 0; font-size: 24px; font-weight: bold">
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="top-buttons">
+        <button onclick="settings()">설정</button>
+      </div>
+    </header>
+
+    <nav class="topnav">
+      <ul>
+        <li>
+          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
+        </li>
+        <li>
+          <a href="group.html"><span>📅</span>일정 조율</a>
+        </li>
+        <li>
+          <a href="map.html"><span>📍</span>회의 장소</a>
+        </li>
+        <li>
+          <a href="file-share.html"><span>📎</span>자료 공유</a>
+        </li>
+        <li>
+          <a href="group-result.html"><span>📋</span>전체 요약</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="main-container">
+      <div class="content">
+        <section
+          class="main-banner"
+          style="text-align: center; padding: 50px 20px"
+        >
+        <h2 style="font-size: 28px; font-weight: 700; color: #333">
+            팀과 함께 시간을 조율하고 협업해보세요!
+          </h2>
+          <p style="margin-top: 12px; font-size: 18px; color: #666">
+            효율적인 역할 분담과 일정 관리로 더 나은 팀워크를 경험해보세요.
+          </p>
+          <br><br><br>
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            style="
+                padding: 40px;
+              width: 100%;
+              max-width: 900px;
+              border-radius: 12px;
+              margin-bottom: 24px;
+              box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            "
+          >
+          
+            <source src="teamstudy.mp4" type="video/mp4" />
+            브라우저가 video 태그를 지원하지 않습니다.
+          </video>
+          <div
+            class="main-buttons"
+            style="
+              margin-top: 32px;
+              display: flex;
+              gap: 16px;
+              justify-content: center;
+            "
+          ></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
