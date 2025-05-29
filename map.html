@@ -6,16 +6,24 @@
     <title>MeetMate - 회의 장소</title>
     <script
       async
-      src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places&callback=initMap"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnAjSAFmvjN1cMI8DHKqz6kht2nLA4kys&libraries=places&callback=initMap"
     ></script>
     <link rel="stylesheet" href="meetmate.css" />
     <script src="meetmate.js"></script>
     <style>
       .content {
+        align-items: center;
+        justify-content: center;
+        top: 100px;
         flex: 1;
         padding: 48px;
         max-width: 800px;
-        margin: 0 auto;
+        margin-right: 315px;
+        min-height: calc(100vh - 80px);
+      }
+      .main-container {
+        display: flex;
+        justify-content: center;
       }
 
       .content h2 {
@@ -33,9 +41,10 @@
       }
 
       .meeting-card {
+        text-align: center;
         background: #fff;
         border-radius: 12px;
-        padding: 24px;
+        padding: 30px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       }
 
@@ -84,47 +93,68 @@
           >MeetMate</a
         >
       </h1>
-      <div class="top-buttons">
-        <button onclick="settings()">설정</button>
-      </div>
+      <nav class="topnav">
+        <ul>
+          <li>
+            <a href="group.html">일정 조율</a>
+          </li>
+          <li>
+            <a href="program.html">역할 분담</a>
+          </li>
+          <li class="active">
+            <a href="map.html">회의 장소</a>
+          </li>
+          <li>
+            <a href="file-share.html">자료 공유</a>
+          </li>
+          <li>
+            <a href="group-result.html">전체 요약</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="top-buttons" id="auth-buttons"></div>
     </header>
-    <nav class="topnav">
-      <ul>
-        <li>
-          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
-        </li>
-        <li>
-          <a href="group.html"><span>📅</span>일정 조율</a>
-        </li>
-        <li class="active">
-          <a href="map.html"><span>📍</span>회의 장소</a>
-        </li>
-        <li>
-          <a href="file-share.html"><span>📎</span>자료 공유</a>
-        </li>
-        <li>
-          <a href="group-result.html"><span>📋</span>전체 요약</a>
-        </li>
-      </ul>
-    </nav>
+
     <div class="main-container">
       <div class="content">
-        <h2>📍 회의 장소 설정</h2>
+        <h2>회의 장소 설정</h2>
         <p class="intro">
           원하는 회의 방식을 선택하고, 회의 참여 또는 장소를 쉽게 설정하세요.
         </p>
 
         <div class="meeting-card">
           <div class="meeting-option">
-            <p><strong>📝 회의 방식 선택</strong></p>
-            <label
-              ><input type="radio" name="meetingType" value="offline" />
-              대면</label
-            >
-            <label
-              ><input type="radio" name="meetingType" value="online" />
-              비대면</label
-            >
+            <p><strong>회의 방식 선택</strong></p>
+<label><input type="radio" name="meetingType" id="offline" value="offline"> 대면</label>
+<label><input type="radio" name="meetingType" value="online"> 비대면</label>
+
+<!-- 대면 선택 시 보여질 검색 + 지도 영역 -->
+<div id="offline-options" style="display: none; margin-top: 20px;">
+  <!-- 검색창 + 버튼 -->
+  <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+    <input
+      type="text"
+      id="place-input"
+      placeholder="장소를 검색해보세요 (예: 스터디카페)"
+      style="flex: 1; padding: 8px;"
+    />
+    <button id="search-btn" style="padding: 8px 16px;">검색</button>
+  </div>
+
+  <!-- 지도 -->
+  <div id="map" style="width: 100%; height: 400px;"></div>
+
+  <!-- 선택된 장소 정보 + 저장 버튼 -->
+  <div
+    id="place-details"
+    style="display: none; margin-top: 16px; padding: 12px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;"
+  >
+    <p><strong>선택한 장소:</strong> <span id="place-name">-</span></p>
+    <p><strong>주소:</strong> <span id="place-address">-</span></p>
+    <button id="save-place-btn" style="margin-top: 8px;">이 장소로 결정</button>
+  </div>
+</div>
+
           </div>
 
           <!-- Zoom 전용 기능 -->
@@ -152,11 +182,9 @@
             </div>
           </div>
 
-          <!-- 대면용 지도 -->
-          <div id="map"></div>
+          <div id="map">
         </div>
 
-        <!-- 안내 TIP -->
         <div class="tip-card">
           <strong>📌 TIP</strong><br />
           - Zoom은 로그인 상태에서 이용하면 더 편리해요.<br />
@@ -172,22 +200,12 @@
           <div id="current-time">🕒 현재 시간: -</div>
         </div>
         <div class="card motivation">
-          🧡 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
-        </div>
-        <div class="card">
-          <button
-            onclick="toggleDarkMode()"
-            class="primary"
-            style="width: 100%"
-          >
-            🌙 다크모드
-          </button>
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
         </div>
       </div>
     </div>
 
     <script>
-      // 회의 방식 선택
       document
         .querySelectorAll('input[name="meetingType"]')
         .forEach((radio) => {
@@ -198,15 +216,20 @@
             if (this.value === "online") {
               zoomBox.style.display = "block";
               mapEl.style.display = "none";
+              localStorage.setItem("meetingLocation", "💻 비대면 회의 (Zoom)");
             } else {
               zoomBox.style.display = "none";
               mapEl.style.display = "block";
+              localStorage.setItem(
+                "meetingLocation",
+                "📍 대면 회의 (스터디카페)"
+              );
               initMap();
             }
           });
         });
 
-      // 지도
+      // 지도 로딩
       function initMap() {
         const map = new google.maps.Map(document.getElementById("map"), {
           center: { lat: 37.5665, lng: 126.978 },
@@ -223,9 +246,16 @@
           (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
               results.forEach((place) => {
-                new google.maps.Marker({
+                const marker = new google.maps.Marker({
                   map,
                   position: place.geometry.location,
+                  title: place.name,
+                });
+
+                marker.addListener("click", () => {
+                  const summary = `📍 ${place.name} - ${place.vicinity}`;
+                  localStorage.setItem("meetingLocation", summary);
+                  alert("회의 장소가 저장되었습니다:\n" + summary);
                 });
               });
             }
@@ -233,7 +263,6 @@
         );
       }
 
-      // Zoom 기능
       function openZoomCreation() {
         window.open("https://zoom.us/start/videomeeting", "_blank");
       }
@@ -248,8 +277,162 @@
           alert("유효한 Zoom 회의 링크를 입력해주세요.");
           return;
         }
+        const summary = "💻 Zoom 회의 링크: " + link;
+        localStorage.setItem("meetingLocation", summary);
+        alert("Zoom 링크가 저장되었습니다:\n" + summary);
         window.open(link, "_blank");
       }
-    </script>
+      const username = localStorage.getItem("user");
+      const topArea = document.getElementById("auth-buttons");
+
+      if (username && username !== "null") {
+        topArea.innerHTML = `
+      <span>${username}님 환영합니다</span>
+      <button onclick="logout()">로그아웃</button>
+    `;
+      } else {
+        topArea.innerHTML = `
+      <button onclick="window.location.href='login.html'">로그인</button>
+    `;
+      }
+
+      function logout() {
+        localStorage.removeItem("user");
+        location.reload();
+      }
+  // 전역 변수
+  let map;
+  let markers = [];
+  let service;
+
+  function initMapAndSearch(keyword = "스터디카페") {
+    const center = { lat: 37.5665, lng: 126.978 };
+    map = new google.maps.Map(document.getElementById("map"), {
+      center,
+      zoom: 14,
+    });
+
+    service = new google.maps.places.PlacesService(map);
+    searchPlaces(keyword);
+  }
+
+  function searchPlaces(keyword) {
+    if (!service) return;
+
+    const request = {
+      location: map.getCenter(),
+      radius: 1500,
+      keyword,
+    };
+
+    service.nearbySearch(request, (results, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        clearMarkers();
+        results.forEach((place) => {
+          const marker = new google.maps.Marker({
+            map,
+            position: place.geometry.location,
+            title: place.name,
+          });
+
+          marker.addListener("click", () => {
+            localStorage.setItem(
+              "selectedMeetingPlace",
+              JSON.stringify({
+                name: place.name,
+                address: place.vicinity || place.formatted_address,
+              })
+            );
+            alert(`${place.name} 장소가 저장되었습니다.`);
+          });
+
+          markers.push(marker);
+        });
+      }
+    });
+  }
+
+  function clearMarkers() {
+    markers.forEach((m) => m.setMap(null));
+    markers = [];
+  }
+
+  // 대면 선택 시 지도 보이기
+  function onSelectOfflineMeeting() {
+    document.getElementById("offline-options").style.display = "block";
+    initMapAndSearch();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+  // "대면" 선택 시 지도 보이기
+  document
+    .getElementById("offline")
+    .addEventListener("change", onSelectOfflineMeeting);
+    document.getElementById("save-place-btn").addEventListener("click", () => {
+    if (selectedPlace) {
+      localStorage.setItem("selectedMeetingPlace", JSON.stringify(selectedPlace));
+      alert(`${selectedPlace.name}' 저장되었습니다!`);
+    }
+  });
+
+  // 엔터 입력 시 검색
+  document
+    .getElementById("place-input")
+    .addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        searchPlaces(e.target.value);
+      }
+    });
+
+  // 검색 버튼 클릭 시 검색
+  document
+    .getElementById("search-btn")
+    .addEventListener("click", () => {
+      const keyword = document.getElementById("place-input").value.trim();
+      if (keyword) searchPlaces(keyword);
+    });
+});
+let selectedPlace = null; // 현재 선택된 장소 저장용
+
+function searchPlaces(keyword) {
+  if (!service) return;
+
+  const request = {
+    location: map.getCenter(),
+    radius: 1500,
+    keyword,
+  };
+
+  service.nearbySearch(request, (results, status) => {
+    if (status === google.maps.places.PlacesServiceStatus.OK) {
+      clearMarkers();
+      results.forEach((place) => {
+        const marker = new google.maps.Marker({
+          map,
+          position: place.geometry.location,
+          title: place.name,
+        });
+
+        marker.addListener("click", () => {
+          selectedPlace = {
+            name: place.name,
+            address: place.vicinity || place.formatted_address,
+          };
+
+          // 상세 정보 표시
+          document.getElementById("place-name").textContent = selectedPlace.name;
+          document.getElementById("place-address").textContent = selectedPlace.address;
+          document.getElementById("place-details").style.display = "block";
+        });
+
+        markers.push(marker);
+      });
+    }
+  });
+}
+
+</script>
+
+
   </body>
 </html>

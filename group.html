@@ -8,9 +8,17 @@
     <script src="meetmate.js"></script>
     <style>
       .content {
+        align-items: center;
+        justify-content: center;
         flex: 1;
-        padding: 48px;
-        margin: 0 auto;
+        padding: 100px;
+         max-width: 800px;
+        margin-right: 315px;
+        min-height: calc(100vh - 80px);
+      }
+      .main-container {
+        display: flex;
+        justify-content: center;
       }
       .content h2 {
         margin-top: 0;
@@ -55,75 +63,12 @@
       .member-invite-button {
         margin-top: 8px;
       }
-
-      @media (max-width: 768px) {
-        .main-container {
-          flex-direction: column;
-        }
-        .sidebar {
-          width: 100%;
-          display: flex;
-          overflow-x: auto;
-          border-bottom: 1px solid #ddd;
-        }
-        .sidebar ul {
-          display: flex;
-          width: 100%;
-        }
-        .sidebar li {
-          flex: 1;
-          justify-content: center;
-          padding: 10px;
-          font-size: 13px;
-        }
-        .content {
-          padding: 24px;
-        }
-      }
-
       label {
         display: block;
         font-weight: 600;
         font-size: 16px;
         margin-top: 12px;
         margin-bottom: 6px;
-      }
-
-      body.dark {
-        background-color: #121212;
-        color: #e0e0e0;
-      }
-
-      body.dark header,
-      body.dark .sidebar,
-      body.dark .side-panel,
-      body.dark .card,
-      body.dark .content {
-        background-color: #1e1e1e;
-        color: #e0e0e0;
-      }
-
-      body.dark .link-box {
-        background-color: #2c2c2c;
-        border-color: #555;
-        color: #f0f0f0;
-      }
-
-      body.dark input[type="text"] {
-        background-color: #3a3a3a;
-        border: 1px solid #555;
-        color: #f0f0f0;
-      }
-
-      body.dark button.primary {
-        background-color: #2a2a2a;
-        color: #80b0ff;
-        border: 1px solid #484848;
-      }
-
-      body.dark button.primary:hover {
-        background-color: #333;
-        color: #a5c9ff;
       }
     </style>
   </head>
@@ -134,29 +79,28 @@
           >MeetMate</a
         >
       </h1>
-      <div class="top-buttons">
-        <button onclick="settings()">설정</button>
+      <nav class="topnav">
+        <ul>
+          <li class="active">
+            <a href="group.html">일정 조율</a>
+          </li>
+          <li>
+            <a href="program.html">역할 분담</a>
+          </li>
+          <li>
+            <a href="map.html">회의 장소</a>
+          </li>
+          <li>
+            <a href="file-share.html">자료 공유</a>
+          </li>
+          <li>
+            <a href="group-result.html">전체 요약</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="top-buttons" id="auth-buttons">
       </div>
     </header>
-    <nav class="topnav">
-      <ul>
-        <li>
-          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
-        </li>
-        <li class="active">
-          <a href="group.html"><span>📅</span>일정 조율</a>
-        </li>
-        <li>
-          <a href="map.html"><span>📍</span>회의 장소</a>
-        </li>
-        <li>
-          <a href="file-share.html"><span>📎</span>자료 공유</a>
-        </li>
-        <li>
-          <a href="group-result.html"><span>📋</span>전체 요약</a>
-        </li>
-      </ul>
-    </nav>
     <div class="main-container">
       <div class="content">
         <h2>그룹 만들기</h2>
@@ -186,7 +130,7 @@
         </section>
         <section>
           <button class="primary" onclick="goToSchedule()">
-            ➡️ 시간 선택하러 가기
+            시간 선택하러 가기
           </button>
         </section>
       </div>
@@ -198,14 +142,6 @@
         <div class="card motivation">
           🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
         </div>
-        <div class="card">
-          <button
-            onclick="toggleDarkMode()"
-            class="primary"
-            style="width: 100%"
-          >
-            🌙 다크모드
-          </button>
         </div>
       </div>
     </div>
@@ -257,6 +193,24 @@
       }
       function goHome() {
         location.href = "program.html";
+      }
+      const username = localStorage.getItem("user");
+      const topArea = document.getElementById("auth-buttons");
+
+      if (username && username !== "null") {
+        topArea.innerHTML = `
+      <span>${username}님 환영합니다</span>
+      <button onclick="logout()">로그아웃</button>
+    `;
+      } else {
+        topArea.innerHTML = `
+      <button onclick="window.location.href='login.html'">로그인</button>
+    `;
+      }
+
+      function logout() {
+        localStorage.removeItem("user");
+        location.reload();
       }
     </script>
   </body>

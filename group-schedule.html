@@ -8,9 +8,17 @@
     <script src="meetmate.js"></script>
     <style>
       .content {
+        align-items: center;
+        justify-content: center;
         flex: 1;
-        padding: 48px;
-        margin: 0 auto;
+        padding: 15px;
+        max-width: 800px;
+        margin-right: 315px;
+        min-height: calc(100vh - 80px);
+      }
+      .main-container {
+        display: flex;
+        justify-content: center;
       }
       .schedule-grid {
         display: flex;
@@ -57,29 +65,29 @@
           >MeetMate</a
         >
       </h1>
-      <div class="top-buttons">
-        <button onclick="settings()">설정</button>
+      <nav class="topnav">
+        <ul>
+          <li class="active">
+            <a href="group.html">일정 조율</a>
+          </li>
+          <li>
+            <a href="program.html">역할 분담</a>
+          </li>
+          <li>
+            <a href="map.html">회의 장소</a>
+          </li>
+          <li>
+            <a href="file-share.html">자료 공유</a>
+          </li>
+          <li>
+            <a href="group-result.html">전체 요약</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="top-buttons" id="auth-buttons">
+        <!-- 동적으로 내용 삽입됨 -->
       </div>
     </header>
-    <nav class="topnav">
-      <ul>
-        <li>
-          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
-        </li>
-        <li class="active">
-          <a href="group.html"><span>📅</span>일정 조율</a>
-        </li>
-        <li>
-          <a href="map.html"><span>📍</span>회의 장소</a>
-        </li>
-        <li>
-          <a href="file-share.html"><span>📎</span>자료 공유</a>
-        </li>
-        <li>
-          <a href="group-result.html"><span>📋</span>전체 요약</a>
-        </li>
-      </ul>
-    </nav>
     <div class="main-container">
       <div class="content">
         <h2 style="text-align: center">🕓 그룹 시간 선택</h2>
@@ -101,8 +109,8 @@
         </div>
 
         <div style="text-align: center; margin-top: 24px">
-          <button class="primary" onclick="submitSelection()">
-            ✅ 선택 완료
+          <button class="primary" onclick="saveSelectionToLocal()">
+            선택 완료
           </button>
         </div>
       </div>
@@ -112,16 +120,7 @@
           <div id="current-time">🕒 현재 시간: -</div>
         </div>
         <div class="card motivation">
-          🧡 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
-        </div>
-        <div class="card">
-          <button
-            onclick="toggleDarkMode()"
-            class="primary"
-            style="width: 100%"
-          >
-            🌙 다크모드
-          </button>
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
         </div>
       </div>
     </div>
@@ -185,6 +184,129 @@
 
       function settings() {
         alert("설정 페이지로 이동합니다.");
+      }
+      function saveSelectionToLocal() {
+        const selected = [...document.querySelectorAll(".cell.selected")].map(
+          (cell) => ({
+            day: cell.dataset.day,
+            time: cell.dataset.time,
+          })
+        );
+
+        if (selected.length === 0) {
+          alert("하나 이상의 시간을 선택해주세요.");
+          return;
+        }
+
+        const params = new URLSearchParams(location.search);
+        const code = params.get("code") || "default";
+        const username = localStorage.getItem("user");
+
+        if (!username) {
+          alert("로그인 정보가 없습니다.");
+          return;
+        }
+
+        localStorage.setItem(
+          `selectedTime_${username}`,
+          JSON.stringify(selected)
+        );
+
+        // 그룹 멤버 관리
+        const groupKey = `group_${code}`;
+        const members = JSON.parse(localStorage.getItem(groupKey) || "[]");
+        if (!members.includes(username)) {
+          members.push(username);
+          localStorage.setItem(groupKey, JSON.stringify(members));
+        }
+
+        // 이동
+        window.location.href = `group-schedule-result.html?code=${code}&user=${encodeURIComponent(
+          username
+        )}`;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(location.search);
+        const code =
+          params.get("code") || localStorage.getItem("groupCode") || "default";
+        const username = localStorage.getItem("user") || "";
+        const groupKey = `group_${code}`;
+        const members = JSON.parse(localStorage.getItem(groupKey) || []);
+        const selections = members.map((name) =>
+          JSON.parse(localStorage.getItem(`selectedTime_${name}`) || "[]")
+        );
+
+        const countMap = {};
+        selections.forEach((sel) => {
+          sel.forEach(({ day, time }) => {
+            const key = `${day}-${time}`;
+            countMap[key] = (countMap[key] || 0) + 1;
+          });
+        });
+
+        const max = Math.max(...Object.values(countMap));
+        const bestSlots = [];
+        const grid = document.getElementById("schedule-grid");
+        const days = ["일", "월", "화", "수", "목", "금", "토"];
+
+        for (let hour = 9; hour <= 22; hour++) {
+          const time = `${hour.toString().padStart(2, "0")}:00`;
+          const row = document.createElement("div");
+          row.className = "row";
+          row.innerHTML = `<div class="time-col">${time}</div>`;
+
+          for (const day of days) {
+            const cell = document.createElement("div");
+            const key = `${day}-${time}`;
+
+            const mySel = JSON.parse(
+              localStorage.getItem(`selectedTime_${username}`) || "[]"
+            );
+            const isMine = mySel.some((s) => s.day === day && s.time === time);
+
+            if (isMine) {
+              cell.classList.add("cell", "my-selection");
+            } else if (countMap[key]) {
+              cell.classList.add("cell", "others-selection");
+            } else {
+              cell.classList.add("cell");
+            }
+
+            if (countMap[key] === max && max > 1) {
+              cell.classList.add("recommended");
+              bestSlots.push(`${day} ${time}`);
+            }
+
+            row.appendChild(cell);
+          }
+
+          grid.appendChild(row);
+        }
+
+        const recText = document.getElementById("recommendation");
+        recText.textContent =
+          bestSlots.length > 0
+            ? `추천 시간대: ${bestSlots.join(", ")}`
+            : `아직 겹치는 시간이 부족합니다.`;
+      });
+      const username = localStorage.getItem("user");
+      const topArea = document.getElementById("auth-buttons");
+
+      if (username && username !== "null") {
+        topArea.innerHTML = `
+              <span>${username}님 환영합니다</span>
+              <button onclick="logout()">로그아웃</button>
+            `;
+      } else {
+        topArea.innerHTML = `
+              <button onclick="window.location.href='login.html'">로그인</button>
+            `;
+      }
+
+      function logout() {
+        localStorage.removeItem("user");
+        location.reload();
       }
     </script>
   </body>

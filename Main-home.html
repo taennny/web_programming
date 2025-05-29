@@ -6,6 +6,228 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="meetmate.css" />
     <script src="meetmate.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+      }
+
+      .video-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .video-bg video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.4;
+        filter: blur(2px);
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+        padding: 100px;
+        background-color: transparent;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .content h1 {
+        position: absolute;
+        top: -20px;
+        left: 610px;
+        font-size: 50px;
+        text-align: center;
+      }
+
+      .banner-overlay {
+        position: absolute;
+        top: 500px;
+        left: 0px;
+        background-color: rgba(255, 255, 255, 0.7); /* 반투명 흰색 */
+        padding: 80px 30px;
+        width: 1470px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .banner-overlay h2 {
+        position: absolute;
+        top: 60px;
+        left: 550px;
+        color: #5c5c5c;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      .button-group {
+        margin-top: 24px;
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+      }
+
+      .primary-button,
+      .secondary-button {
+        text-decoration: none;
+        padding: 10px 22px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .primary-button {
+        position: absolute;
+        top: 130px;
+        left: 550px;
+        background-color: #c7c7c7;
+        color: rgb(117, 117, 117);
+        border: none;
+      }
+
+      .secondary-button {
+        position: absolute;
+        top: 130px;
+        left: 750px;
+        background-color: rgb(117, 117, 117);
+        color: #c7c7c7;
+      }
+
+      @media (min-width: 1024px) {
+        .topnav {
+          display: flex !important;
+          justify-content: center;
+          align-items: center;
+          position: static;
+          flex-direction: row !important;
+          background-color: transparent;
+          height: auto;
+          width: auto;
+        }
+        .topnav ul {
+          display: flex;
+          gap: 24px;
+          padding: 0;
+          margin: 0;
+          list-style: none;
+        }
+
+        .topnav li {
+          display: inline-block;
+        }
+
+        .topnav a {
+          color: white; /* 또는 원하는 색 */
+          padding: 16px;
+          text-decoration: none;
+          font-weight: bold;
+          display: block;
+        }
+        .hamburger {
+          display: none;
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 1023px) {
+        .topnav {
+          flex-direction: column;
+          align-items: flex-start;
+          position: fixed;
+          top: 80px;
+          left: 0;
+          width: 200px;
+          height: 100%;
+          background-color: #2e2e2e;
+          box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .topnav ul {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .topnav li {
+          width: 100%;
+        }
+
+        .topnav a {
+          padding: 16px;
+          display: block;
+          width: 100%;
+        }
+
+        .hamburger {
+          display: none;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .topnav {
+          text-align: center;
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 64px;
+          left: 0;
+          width: 100%;
+          background-color: #ffffff;
+          z-index: 1000;
+          padding: 20px 24px;
+          border-top: 1px solid #ccc;
+        }
+
+        .topnav.active {
+          display: flex;
+        }
+
+        .topnav ul {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          width: 100%;
+        }
+
+        .topnav li {
+          margin: 16px 0;
+        }
+
+        .topnav a {
+          display: block; /* ✅ a 태그를 블록 요소로 만들어 줄 전체 너비 확보 */
+          font-size: 18px;
+          font-weight: 600;
+          color: #000000 !important;
+          text-decoration: none;
+          padding: 8px 0;
+        }
+
+        .topnav a:hover {
+          color: #181818;
+        }
+
+        .hamburger {
+          display: block;
+          position: absolute;
+          right: 24px;
+          top: 24px;
+          cursor: pointer;
+          font-size: 24px;
+          color: white;
+          z-index: 1100;
+        }
+      }
+    </style>
   </head>
   <body>
     <header
@@ -13,8 +235,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 18px 24px;
-        background-color: #fff;
+        padding: 30px 24px;
+        background-color: #000000;
         border-bottom: 1px solid #eee;
       "
     >
@@ -23,74 +245,74 @@
           >MeetMate</a
         >
       </h1>
-      <div class="top-buttons">
-        <button onclick="settings()">설정</button>
-      </div>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+      <div style="width: 80px"></div>
     </header>
+    <div class="video-bg">
+      <video autoplay muted loop playsinline>
+        <source src="teamstudy.mp4" type="video/mp4" />
+      </video>
+    </div>
 
-    <nav class="topnav">
-      <ul>
-        <li>
-          <a href="program.html"><span>🧑‍🤝‍🧑</span>역할 분담</a>
-        </li>
-        <li>
-          <a href="group.html"><span>📅</span>일정 조율</a>
-        </li>
-        <li>
-          <a href="map.html"><span>📍</span>회의 장소</a>
-        </li>
-        <li>
-          <a href="file-share.html"><span>📎</span>자료 공유</a>
-        </li>
-        <li>
-          <a href="group-result.html"><span>📋</span>전체 요약</a>
-        </li>
-      </ul>
-    </nav>
-
-    <div class="main-container">
-      <div class="content">
-        <section
-          class="main-banner"
-          style="text-align: center; padding: 50px 20px"
-        >
-        <h2 style="font-size: 28px; font-weight: 700; color: #333">
-            팀과 함께 시간을 조율하고 협업해보세요!
-          </h2>
-          <p style="margin-top: 12px; font-size: 18px; color: #666">
-            효율적인 역할 분담과 일정 관리로 더 나은 팀워크를 경험해보세요.
-          </p>
-          <br><br><br>
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            style="
-                padding: 40px;
-              width: 100%;
-              max-width: 900px;
-              border-radius: 12px;
-              margin-bottom: 24px;
-              box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            "
-          >
-          
-            <source src="teamstudy.mp4" type="video/mp4" />
-            브라우저가 video 태그를 지원하지 않습니다.
-          </video>
-          <div
-            class="main-buttons"
-            style="
-              margin-top: 32px;
-              display: flex;
-              gap: 16px;
-              justify-content: center;
-            "
-          ></div>
-          </div>
-        </section>
+    <div class="content">
+      <div class="banner-overlay">
+        <h1>MeetMate</h1>
+        <h2>팀과 함께 일정을 맞추고 역할을 나눠보세요</h2>
+        <div class="button-group">
+          <a href="group.html" class="primary-button">바로 시작하기</a>
+          <a href="login.html" class="secondary-button">로그인하기</a>
+        </div>
       </div>
     </div>
+    <script>
+      const username = localStorage.getItem("user");
+      const topArea = document.getElementById("auth-buttons");
+
+      if (username && username !== "null") {
+        topArea.innerHTML = `
+      <span>${username}님 환영합니다</span>
+      <button onclick="logout()">로그아웃</button>
+    `;
+      } else {
+        topArea.innerHTML = `
+      <button onclick="window.location.href='login.html'">로그인</button>
+    `;
+      }
+
+      function logout() {
+        localStorage.removeItem("user");
+        location.reload();
+      }
+
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.classList.toggle("active");
+      }
+
+      // 창이 커질 때 active 클래스 제거 (메뉴 고정용)
+      window.addEventListener("resize", () => {
+        const menu = document.getElementById("dropdownMenu");
+        if (window.innerWidth >= 768) {
+          menu.classList.remove("active");
+        }
+      });
+      document.querySelectorAll(".topnav a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth < 768) {
+            document.getElementById("dropdownMenu").classList.remove("active");
+          }
+        });
+      });
+    </script>
   </body>
 </html>

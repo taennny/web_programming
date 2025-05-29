@@ -4,10 +4,41 @@
     <meta charset="UTF-8" />
     <title>전체 요약</title>
     <link rel="stylesheet" href="meetmate.css" />
+    <script src="meetmate.js"></script>
     <style>
-      .section {
-        margin-bottom: 40px;
+      .content {
+        padding: 20px 50px;
+        margin-right: 300px;
+        width: 1200px;
       }
+      .content h2 {
+        padding-top: 50px;
+        text-align: center;
+      }
+      .summary-grid {
+        padding-top: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: flex-start;
+      }
+
+      .summary-grid .section {
+        flex: 1 1 340px; /* 최소 300px, 남는 공간 사용 */
+        width: 340px;
+        max-width: 340px; /* 너무 넓어지지 않도록 제한 */
+        background: #fff;
+        padding: 16px;
+        border-radius: 10px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      @media (max-width: 768px) {
+        .horizontal-sections {
+          flex-direction: column;
+        }
+      }
+
       .section h3 {
         font-size: 20px;
         margin-bottom: 12px;
@@ -48,78 +79,61 @@
           >MeetMate</a
         >
       </h1>
-      <div class="top-buttons">
-        <button onclick="settings()">설정</button>
+      <nav class="topnav">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li class="active"><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+      <div class="top-buttons" id="auth-buttons">
+        <!-- 동적으로 내용 삽입됨 -->
       </div>
     </header>
 
-    <nav class="topnav">
-      <ul>
-        <li><a href="program.html">🧑‍🤝‍🧑 역할 분담</a></li>
-        <li><a href="group.html">📅 일정 조율</a></li>
-        <li><a href="map.html">📍 회의 장소</a></li>
-        <li><a href="file-share.html">📎 자료 공유</a></li>
-        <li class="active"><a href="group-result.html">📋 전체 요약</a></li>
-      </ul>
-    </nav>
-
     <div class="main-container">
       <div class="content">
-        <h2>📋 선택 결과 요약</h2>
+        <h2>선택 결과 요약</h2>
 
-        <div class="section">
-          <h3>🧑‍🤝‍🧑 역할 분담</h3>
-          <table class="summary-table">
-            <thead>
-              <tr>
-                <th>팀원</th>
-                <th>역할</th>
-                <th>할 일</th>
-                <th>D-day</th>
-                <th>메모</th>
-              </tr>
-            </thead>
-            <tbody id="role-summary">
-              <tr>
-                <td colspan="5">데이터 없음</td>
-              </tr>
-            </tbody>
-          </table>
-          <a class="link-button" href="program.html">역할 수정하러 가기</a>
-        </div>
-
-        <div class="section">
-          <h3>🗓️ 회의 일정</h3>
-          <div class="card" id="schedule-summary">선택된 시간이 없습니다.</div>
-          <a class="link-button" href="group.html">일정 수정하러 가기</a>
-        </div>
-
-        <div class="section">
-          <h3>📍 회의 장소</h3>
-          <div class="card" id="location-summary">
-            선택된 회의 장소가 없습니다.
+        <div class="summary-grid">
+          <div class="section">
+            <h3>🧑‍🤝‍🧑 역할 분담</h3>
+            <table class="summary-table">
+              <thead>
+                <tr>
+                  <th>팀원</th>
+                  <th>역할</th>
+                  <th>할 일</th>
+                  <th>D-day</th>
+                  <th>메모</th>
+                </tr>
+              </thead>
+              <tbody id="role-summary">
+                <tr>
+                  <td colspan="5">데이터 없음</td>
+                </tr>
+              </tbody>
+            </table>
+            <a class="link-button" href="program.html">역할 수정하러 가기</a>
           </div>
-          <a class="link-button" href="map.html">회의 장소 선택하러 가기</a>
-        </div>
 
-        <div class="section">
-          <h3>📎 자료 공유</h3>
-          <table class="summary-table">
-            <thead>
-              <tr>
-                <th>제목</th>
-                <th>날짜</th>
-                <th>링크</th>
-                <th>설명</th>
-              </tr>
-            </thead>
-            <tbody id="file-summary">
-              <tr>
-                <td colspan="4">등록된 자료가 없습니다.</td>
-              </tr>
-            </tbody>
-          </table>
-          <a class="link-button" href="file-share.html">자료 추가하러 가기</a>
+          <div class="section">
+            <h3>회의 일정</h3>
+            <div class="card" id="schedule-summary">
+              선택된 시간이 없습니다.
+            </div>
+            <a class="link-button" href="group.html">일정 수정하러 가기</a>
+          </div>
+
+          <div class="section">
+            <h3>회의 장소</h3>
+            <div class="card" id="location-summary">
+              선택된 회의 장소가 없습니다.
+            </div>
+            <a class="link-button" href="map.html">회의 장소 선택하러 가기</a>
+          </div>
         </div>
       </div>
       <div class="side-panel">
@@ -128,18 +142,89 @@
           <div id="current-time">🕒 현재 시간: -</div>
         </div>
         <div class="card motivation">
-          🧡 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
-        </div>
-        <div class="card">
-          <button
-            onclick="toggleDarkMode()"
-            class="primary"
-            style="width: 100%"
-          >
-            🌙 다크모드
-          </button>
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
         </div>
       </div>
     </div>
+    <script>
+      function saveRoleSummary() {
+        const table = document.querySelector("#role-summary");
+        const rows = table.querySelectorAll("tr");
+        const data = [];
+
+        rows.forEach((row) => {
+          const cells = row.querySelectorAll("td");
+          if (cells.length >= 5) {
+            const team = cells[0].innerText.trim();
+            const role = cells[1].innerText.trim();
+            const task = cells[2].innerText.trim();
+            const dday = cells[3].innerText.trim();
+            const memo = cells[4].innerText.trim();
+
+            data.push({ team, role, task, dday, memo });
+          }
+        });
+
+        localStorage.setItem("roleSummary", JSON.stringify(data));
+      }
+
+      function loadRoleSummary() {
+        const data = JSON.parse(localStorage.getItem("roleSummary") || "[]");
+        const tbody = document.querySelector("#role-summary");
+        tbody.innerHTML = "";
+
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5">데이터 없음</td></tr>';
+          return;
+        }
+
+        let lastTeam = "";
+        let lastRole = "";
+
+        data.forEach((item, idx) => {
+          const isFirstOfGroup =
+            item.team !== lastTeam || item.role !== lastRole;
+          lastTeam = item.team;
+          lastRole = item.role;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+    <td>${isFirstOfGroup ? item.team : ""}</td>
+    <td>${isFirstOfGroup ? item.role : ""}</td>
+    <td>${item.task}</td>
+    <td>${item.dday}</td>
+    <td>${item.memo}</td>
+  `;
+          tbody.appendChild(tr);
+        });
+      }
+      const username = localStorage.getItem("user");
+      const topArea = document.getElementById("auth-buttons");
+
+      if (username && username !== "null") {
+        topArea.innerHTML = `
+      <span>${username}님 환영합니다</span>
+      <button onclick="logout()">로그아웃</button>
+    `;
+      } else {
+        topArea.innerHTML = `
+      <button onclick="window.location.href='login.html'">로그인</button>
+    `;
+      }
+
+      function logout() {
+        localStorage.removeItem("user");
+        location.reload();
+      }
+      // 페이지 로드 시 데이터 불러오기
+      document.addEventListener("DOMContentLoaded", loadRoleSummary);
+      // 장소 불러오기
+      const place = JSON.parse(localStorage.getItem("selectedMeetingPlace"));
+      if (place) {
+        document.getElementById(
+          "location-summary"
+        ).textContent = `📍 ${place.name} (${place.address})`;
+      }
+    </script>
   </body>
 </html>

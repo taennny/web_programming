@@ -34,3 +34,25 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTime();
   setInterval(updateTime, 1000); // 실시간 시계
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  let prevScroll = window.scrollY;
+  const header = document.querySelector("header");
+
+  if (!header) return;
+
+  window.addEventListener("scroll", () => {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > prevScroll) {
+      header.style.top = "-100px";
+    } else {
+      header.style.top = "0";
+    }
+
+    prevScroll = currentScroll;
+  });
+});
+function toggleMenu() {
+  document.getElementById("mainNav").classList.toggle("active");
+}
