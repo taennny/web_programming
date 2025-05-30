@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MeetMate - 회의 장소</title>
+    <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnAjSAFmvjN1cMI8DHKqz6kht2nLA4kys&libraries=places&callback=initMap"
+  async defer
+></script>
+    <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Map.css">
+    <script src="meetmate.js"></script>
+    <script src="Map.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+         <div style="width: 80px"></div>
+    </header>
+
+    <div class="main-container">
+      <div class="content">
+        <h2>회의 장소 설정</h2>
+        <p class="intro">
+          원하는 회의 방식을 선택하고, 회의 참여 또는 장소를 쉽게 설정하세요.
+        </p>
+
+        <div class="meeting-card">
+          <div class="meeting-option">
+            <p><strong>회의 방식 선택</strong></p>
+<label><input type="radio" name="meetingType" id="offline" value="offline"> 대면</label>
+<label><input type="radio" name="meetingType" value="online"> 비대면</label>
+
+<!-- 대면 선택 시 보여질 검색 + 지도 영역 -->
+<div id="offline-options" style="display: none; margin-top: 20px;">
+  <!-- 검색창 + 버튼 -->
+  <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+    <input
+      type="text"
+      id="place-input"
+      placeholder="장소를 검색해보세요 (예: 스터디카페)"
+      style="flex: 1; padding: 8px;"
+    />
+    <button id="search-btn" style="padding: 8px 16px;">검색</button>
+  </div>
+
+  <!-- 지도 -->
+  <div id="map" style="width: 100%; height: 400px;"></div>
+
+  <!-- 선택된 장소 정보 + 저장 버튼 -->
+  <div
+    id="place-details"
+    style="display: none; margin-top: 16px; padding: 12px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;"
+  >
+    <p><strong>선택한 장소:</strong> <span id="place-name">-</span></p>
+    <p><strong>주소:</strong> <span id="place-address">-</span></p>
+    <button id="save-place-btn" style="margin-top: 8px;">이 장소로 결정</button>
+  </div>
+</div>
+
+          </div>
+
+          <!-- Zoom 전용 기능 -->
+          <div class="zoom-actions" id="zoomActions">
+            <button class="primary" onclick="openZoomCreation()">
+              ➕ Zoom 회의방 만들기
+            </button>
+            <button class="primary" onclick="showJoinSection()">
+              🔗 Zoom 회의방 참여하기
+            </button>
+
+            <div id="zoomJoinSection" style="margin-top: 12px; display: none">
+              <input
+                type="text"
+                id="zoomJoinLink"
+                placeholder="Zoom 회의 링크 입력"
+              />
+              <button
+                class="primary"
+                style="margin-top: 8px"
+                onclick="joinZoomMeeting()"
+              >
+                📞 회의 참여
+              </button>
+            </div>
+          </div>
+
+        <div class="tip-card">
+          <strong>📌 TIP</strong><br />
+          - Zoom은 로그인 상태에서 이용하면 더 편리해요.<br />
+          - 대면 회의는 스터디카페, 도서관 등 원하는 장소를 직접 선택할 수
+          있어요.<br />
+          - 위치 권한을 허용하면 주변 장소 검색이 더 정확해져요.
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: -</div>
+          <div id="current-time">🕒 현재 시간: -</div>
+        </div>
+        <div class="card motivation">
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

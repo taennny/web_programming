@@ -1,0 +1,211 @@
+.content {
+  align-items: center;
+  justify-content: center;
+  top: 100px;
+  flex: 1;
+  padding: 48px;
+  max-width: 800px;
+  margin-right: 315px;
+  min-height: calc(100vh - 80px);
+}
+.main-container {
+  display: flex;
+  justify-content: center;
+}
+
+.content h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.intro {
+  text-align: center;
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 32px;
+}
+
+.meeting-card {
+  text-align: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.meeting-option label {
+  margin-right: 16px;
+  font-size: 16px;
+}
+
+#map {
+  width: 100%;
+  height: 400px;
+  margin-top: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.zoom-actions {
+  display: none;
+  margin-top: 16px;
+}
+
+.zoom-actions input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.tip-card {
+  background: #eaf4ff;
+  border-left: 4px solid #4f91ff;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #3366cc;
+  margin-top: 32px;
+}
+@media (min-width: 1024px) {
+  .content {
+    padding: 16px;
+  }
+  .topnav {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: static;
+    flex-direction: row !important;
+    background-color: transparent;
+    height: auto;
+    width: auto;
+  }
+  .topnav ul {
+    display: flex;
+    gap: 24px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .topnav li {
+    display: inline-block;
+  }
+
+  .topnav a {
+    color: white; /* 또는 원하는 색 */
+    padding: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+  }
+  .hamburger {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .content {
+    padding: 50px 50px;
+    margin-right: 200px; /*사이드 메뉴에 맞추어 화면 조정하기 위함*/
+  }
+
+  .topnav {
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #2e2e2e;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .topnav ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .topnav li {
+    width: 100%;
+  }
+
+  .topnav a {
+    padding: 16px;
+    display: block;
+    width: 100%;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .content {
+    padding: 70px 16px; /* 좌우 여백 확보 */
+    max-width: 100%;
+    margin: 0 auto; /* 중앙 정렬 */
+    box-sizing: border-box;
+  }
+  .topnav {
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    padding: 20px 24px;
+    border-top: 1px solid #ccc;
+  }
+
+  .topnav.active {
+    display: flex;
+  }
+
+  .topnav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .topnav li {
+    margin: 16px 0;
+  }
+
+  .topnav a {
+    display: block; /* ✅ a 태그를 블록 요소로 만들어 줄 전체 너비 확보 */
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000 !important;
+    text-decoration: none;
+    padding: 8px 0;
+  }
+
+  .topnav a:hover {
+    color: #181818;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    z-index: 1100;
+  }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MeetMate 그룹 생성</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Group.css" >
+    <script src="meetmate.js"></script>
+    <script src="Group.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+       <div style="width: 80px"></div>
+      </div>
+    </header>
+    <div class="main-container">
+      <div class="content">
+        <h2>그룹 만들기</h2>
+        <section>
+          <label for="owner-input">닉네임</label>
+          <input type="text" id="owner-input" placeholder="예: 홍길동" />
+        </section>
+        <section>
+          <label for="member-input">조원 초대</label>
+          <input
+            type="text"
+            id="member-input"
+            placeholder="닉네임 또는 이메일 입력"
+          />
+          <button class="primary member-invite-button" onclick="addMember()">
+            + 초대
+          </button>
+
+          <ul class="member-list" id="member-list"></ul>
+        </section>
+        <section>
+          <label>공유 링크</label>
+          <button class="primary" onclick="generateLink()">
+            링크 생성 및 복사
+          </button>
+          <div class="link-box" id="share-link">(링크 없음)</div>
+        </section>
+        <section>
+          <button class="primary" onclick="goToSchedule()">
+            시간 선택하러 가기
+          </button>
+        </section>
+      </div>
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: ...</div>
+          <div id="current-time">🕒 현재 시간: ...</div>
+        </div>
+        <div class="card motivation">
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

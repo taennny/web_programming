@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MeetMate 홈</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Main-home.css" />
+    <script src="meetmate.js"></script>
+    <script src="Main-home.js"></script>
+  </head>
+  <body>
+    <header
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 24px;
+        background-color: #000000;
+        border-bottom: 1px solid #eee;
+      "
+    >
+      <h1 style="margin: 0; font-size: 24px; font-weight: bold">
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+      <div style="width: 80px"></div>
+    </header>
+    <div class="content">
+      <div class="video-bg">
+        <video autoplay muted loop playsinline>
+          <source src="teamstudy.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="banner-overlay">
+        <h1>MeetMate</h1>
+        <h2>팀과 함께 일정을 맞추고 역할을 나눠보세요</h2>
+        <div class="button-group">
+          <a href="group.html" class="primary-button">바로 시작하기</a>
+          <a href="login.html" class="secondary-button">로그인하기</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MeetMate 시간 조율</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Group-Schedule.css" />
+    <script src="meetmate.js"></script>
+    <script src="Group-Schedule.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+      <div style="width: 80px"></div>
+    </header>
+    <div class="main-container">
+      <div class="content">
+        <h2 style="text-align: center">그룹 시간 선택</h2>
+        <p style="text-align: center">
+          그룹 코드: <strong>13sd4a1</strong> | 참여자: <strong>강태윤</strong>
+        </p>
+
+        <div class="schedule-grid" id="schedule-grid" style="margin-top: 32px">
+          <div class="row">
+            <div></div>
+            <div class="day-header">일</div>
+            <div class="day-header">월</div>
+            <div class="day-header">화</div>
+            <div class="day-header">수</div>
+            <div class="day-header">목</div>
+            <div class="day-header">금</div>
+            <div class="day-header">토</div>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px">
+          <button class="primary" onclick="saveSelectionToLocal()">
+            선택 완료
+          </button>
+        </div>
+      </div>
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: -</div>
+          <div id="current-time">🕒 현재 시간: -</div>
+        </div>
+        <div class="card motivation">
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

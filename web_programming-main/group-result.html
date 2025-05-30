@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>전체 요약</title>
+    <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Group-Result.css">
+    <script src="meetmate.js"></script>
+    <script src="Group-Result.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="main-home.html" style="text-decoration: none; color: inherit"
+          >MeetMate</a
+        >
+      </h1>
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
+        <ul>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
+        </ul>
+      </nav>
+      <div style="width: 80px"></div>
+        <!-- 동적으로 내용 삽입됨 -->
+      </div>
+    </header>
+
+    <div class="main-container">
+      <div class="content">
+        <h2>선택 결과 요약</h2>
+
+        <div class="summary-grid">
+          <div class="section">
+            <h3>🧑‍🤝‍🧑 역할 분담</h3>
+            <table class="summary-table">
+              <thead>
+                <tr>
+                  <th>팀원</th>
+                  <th>역할</th>
+                  <th>할 일</th>
+                  <th>D-day</th>
+                  <th>메모</th>
+                </tr>
+              </thead>
+              <tbody id="role-summary">
+                <tr>
+                  <td colspan="5">데이터 없음</td>
+                </tr>
+              </tbody>
+            </table>
+            <a class="link-button" href="program.html">역할 수정하러 가기</a>
+          </div>
+
+          <div class="section">
+            <h3>회의 일정</h3>
+            <div class="card" id="schedule-summary">
+              선택된 시간이 없습니다.
+            </div>
+            <a class="link-button" href="group.html">일정 수정하러 가기</a>
+          </div>
+
+          <div class="section">
+            <h3>회의 장소</h3>
+            <div class="card" id="location-summary">
+              선택된 회의 장소가 없습니다.
+            </div>
+            <a class="link-button" href="map.html">회의 장소 선택하러 가기</a>
+          </div>
+        </div>
+      </div>
+      <div class="side-panel">
+        <div class="card">
+          <div id="today-date">📅 오늘 날짜: -</div>
+          <div id="current-time">🕒 현재 시간: -</div>
+        </div>
+        <div class="card motivation">
+          🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

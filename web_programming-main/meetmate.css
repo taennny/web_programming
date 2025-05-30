@@ -1,0 +1,297 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Pretendard", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 */
+header {
+  height: 80px;
+  background-color: #383838;
+  padding: 40px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: top 0.3s ease;
+}
+header h1 {
+  color: #c4c4c4;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.main-container {
+  padding-top: 80px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.top-buttons button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+.top-buttons button:hover {
+  background-color: #ddd;
+}
+
+.topnav {
+  display: flex;
+  justify-content: center;
+}
+.topnav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.topnav li {
+  margin: 0;
+}
+.topnav a {
+  padding: 14px 24px;
+  color: #dcdcdc !important;
+  text-decoration: none;
+  font-weight: 500;
+}
+.topnav a:hover,
+.topnav .active a {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.top-buttons button {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+.top-buttons button:hover {
+  background-color: #ddd;
+}
+
+
+  .side-panel {
+  position: fixed;
+  top: 0; /* 헤더와 나란히 시작 */
+  right: 0;
+  height: 100vh; /* 전체 높이 */
+  padding: 100px 24px 24px 24px; /* 내부 상단 여백 확보 */
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 999; /* 헤더 바로 아래 */
+}
+
+.side-panel .card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.side-panel .motivation {
+  background-color: #ffffff;
+  color: #0d0d0d;
+  font-weight: 400;
+  border-left: 4px solid #888888;
+}
+
+button.primary {
+  background-color: #ffffff;
+  color: #484848;
+  border: 1px solid #484848;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+button.primary:hover {
+  background-color: #f0f4ff;
+  color: #3366cc;
+}
+
+.topnav a {
+  color: inherit; 
+  text-decoration: none; 
+}
+
+.topnav a:visited {
+  color: inherit; /
+}
+
+.topnav a:hover {
+  text-decoration: none; 
+  color: inherit;
+}
+
+@media (min-width: 1024px) {
+  .content {
+    padding: 100px;
+  }
+  .topnav {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: static;
+    flex-direction: row !important;
+    background-color: transparent;
+    height: auto;
+    width: auto;
+  }
+  .topnav ul {
+    display: flex;
+    gap: 24px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .topnav li {
+    display: inline-block;
+  }
+
+  .topnav a {
+    color: white; /* 또는 원하는 색 */
+    padding: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+  }
+  .hamburger {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .content {
+    padding: 50px 50px;
+    margin-right: 200px; /*사이드 메뉴에 맞추어 화면 조정하기 위함*/
+  }
+  .side-panel {
+    display: none;
+  }
+  .topnav {
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #2e2e2e;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .topnav ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .topnav li {
+    width: 100%;
+  }
+
+  .topnav a {
+    padding: 16px;
+    display: block;
+    width: 100%;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .content {
+    padding: 70px 16px; /* 좌우 여백 확보 */
+    max-width: 100%;
+    margin: 0 auto; /* 중앙 정렬 */
+    box-sizing: border-box;
+  }
+
+  .side-panel {
+    display: none;
+  }
+  .topnav {
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    padding: 20px 24px;
+    border-top: 1px solid #ccc;
+  }
+
+  .topnav.active {
+    display: flex;
+  }
+
+  .topnav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .topnav li {
+    margin: 16px 0;
+  }
+
+  .topnav a {
+    display: block; /* ✅ a 태그를 블록 요소로 만들어 줄 전체 너비 확보 */
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000 !important;
+    text-decoration: none;
+    padding: 8px 0;
+  }
+
+  .topnav a:hover {
+    color: #181818;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    z-index: 1100;
+  }
+}
