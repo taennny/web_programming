@@ -5,72 +5,9 @@
     <title>MeetMate 그룹 생성</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Group.css" >
     <script src="meetmate.js"></script>
-    <style>
-      .content {
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        padding: 100px;
-         max-width: 800px;
-        margin-right: 315px;
-        min-height: calc(100vh - 80px);
-      }
-      .main-container {
-        display: flex;
-        justify-content: center;
-      }
-      .content h2 {
-        margin-top: 0;
-        font-size: 30px;
-        font-weight: 600;
-        text-align: center;
-      }
-      .content p {
-        font-size: 20px;
-        color: #555;
-        margin-top: 10px;
-      }
-      section {
-        margin-bottom: 40px;
-      }
-      input[type="text"] {
-        width: 100%;
-        padding: 12px;
-        margin-top: 8px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-      }
-
-      .link-box {
-        background-color: #f1f3f5;
-        border: 1px solid #ccc;
-        padding: 12px;
-        border-radius: 6px;
-        font-family: monospace;
-        margin-top: 10px;
-        word-break: break-word;
-      }
-      ul.member-list {
-        list-style: none;
-        padding: 0;
-        margin-top: 10px;
-      }
-      ul.member-list li {
-        margin-bottom: 6px;
-      }
-      .member-invite-button {
-        margin-top: 8px;
-      }
-      label {
-        display: block;
-        font-weight: 600;
-        font-size: 16px;
-        margin-top: 12px;
-        margin-bottom: 6px;
-      }
-    </style>
+    <script src="Group.js"></script>
   </head>
   <body>
     <header>
@@ -79,26 +16,18 @@
           >MeetMate</a
         >
       </h1>
-      <nav class="topnav">
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
         <ul>
-          <li class="active">
-            <a href="group.html">일정 조율</a>
-          </li>
-          <li>
-            <a href="program.html">역할 분담</a>
-          </li>
-          <li>
-            <a href="map.html">회의 장소</a>
-          </li>
-          <li>
-            <a href="file-share.html">자료 공유</a>
-          </li>
-          <li>
-            <a href="group-result.html">전체 요약</a>
-          </li>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
         </ul>
       </nav>
-      <div class="top-buttons" id="auth-buttons">
+       <div style="width: 80px"></div>
       </div>
     </header>
     <div class="main-container">
@@ -145,73 +74,5 @@
         </div>
       </div>
     </div>
-    <script>
-      const members = [];
-      function addMember() {
-        const input = document.getElementById("member-input");
-        const value = input.value.trim();
-        if (!value || members.includes(value)) return;
-        members.push(value);
-        input.value = "";
-        renderMembers();
-      }
-      function renderMembers() {
-        const ul = document.getElementById("member-list");
-        ul.innerHTML = members.map((m) => `<li>👤 ${m}</li>`).join("");
-      }
-      function generateLink() {
-        const owner = document.getElementById("owner-input").value.trim();
-        if (!owner) return alert("닉네임을 입력하세요");
-        const code = Math.random().toString(36).substring(2, 8);
-        const link = `${location.origin}${location.pathname}?code=${code}`;
-        document.getElementById("share-link").textContent = link;
-        navigator.clipboard.writeText(link).then(() => {
-          alert("초대 링크가 복사되었습니다.");
-        });
-        localStorage.setItem(
-          `group_${code}`,
-          JSON.stringify({ owner, members })
-        );
-      }
-      function goToSchedule() {
-        const owner = document.getElementById("owner-input").value.trim();
-        if (!owner) {
-          alert("닉네임을 입력하세요");
-          return;
-        }
-        const linkText = document.getElementById("share-link").textContent;
-        const code = linkText.includes("code=")
-          ? linkText.split("code=")[1]
-          : null;
-        if (!code) {
-          alert("먼저 초대 링크를 생성해주세요.");
-          return;
-        }
-        location.href = `group-schedule.html?code=${code}&user=${encodeURIComponent(
-          owner
-        )}`;
-      }
-      function goHome() {
-        location.href = "program.html";
-      }
-      const username = localStorage.getItem("user");
-      const topArea = document.getElementById("auth-buttons");
-
-      if (username && username !== "null") {
-        topArea.innerHTML = `
-      <span>${username}님 환영합니다</span>
-      <button onclick="logout()">로그아웃</button>
-    `;
-      } else {
-        topArea.innerHTML = `
-      <button onclick="window.location.href='login.html'">로그인</button>
-    `;
-      }
-
-      function logout() {
-        localStorage.removeItem("user");
-        location.reload();
-      }
-    </script>
   </body>
 </html>

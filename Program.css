@@ -1,159 +1,66 @@
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Pretendard", sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-/* 헤더 */
-header {
-  height: 80px;
-  background-color: #383838;
-  padding: 40px 24px;
-  display: flex;
-  justify-content: space-between;
+.content {
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  transition: top 0.3s ease;
+  justify-content: center;
+  max-width: 800px;
+  margin-right: 315px;
+  min-height: calc(100vh - 80px);
+  padding: 50px;
 }
-header h1 {
-  color: #c4c4c4;
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0;
-}
-
 .main-container {
-  padding-top: 80px;
-  display: flex;
-  align-items: flex-start;
-}
-
-.top-buttons button {
-  background-color: #eee;
-  border: 1px solid #ccc;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 6px;
-}
-.top-buttons button:hover {
-  background-color: #ddd;
-}
-
-.topnav {
   display: flex;
   justify-content: center;
 }
-.topnav ul {
-  list-style: none;
+.section-header {
+  text-align: center;
+}
+.table-wrapper {
   display: flex;
-  margin: 0;
-  padding: 0;
+  justify-content: center;
 }
-.topnav li {
-  margin: 0;
+.role-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 32px;
 }
-.topnav a {
-  padding: 14px 24px;
-  color: #dcdcdc !important;
-  text-decoration: none;
-  font-weight: 500;
-}
-.topnav a:hover,
-.topnav .active a {
-  color: #ffffff !important;
-  font-weight: 700;
-}
-
-.top-buttons button {
-  background-color: #eee;
+.role-table th,
+.role-table td {
   border: 1px solid #ccc;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 6px;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
 }
-.top-buttons button:hover {
-  background-color: #ddd;
+.role-table input[type="text"],
+.role-table input[type="date"] {
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
-
-
-  .side-panel {
-  position: fixed;
-  top: 0; /* 헤더와 나란히 시작 */
-  right: 0;
-  height: 100vh; /* 전체 높이 */
-  padding: 100px 24px 24px 24px; /* 내부 상단 여백 확보 */
-  background-color: #fff;
-  border-left: 1px solid #ddd;
+.todo-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  z-index: 999; /* 헤더 바로 아래 */
+  gap: 8px;
 }
-
-.side-panel .card {
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.side-panel .motivation {
-  background-color: #ffffff;
-  color: #0d0d0d;
-  font-weight: 400;
-  border-left: 4px solid #888888;
+.todo-item input[type="text"] {
+  flex: 1;
 }
-
-button.primary {
-  background-color: #ffffff;
-  color: #484848;
-  border: 1px solid #484848;
-  font-size: 14px;
-  padding: 10px 18px;
-  border-radius: 6px;
+.add-todo-btn,
+.add-row-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
 }
-button.primary:hover {
-  background-color: #f0f4ff;
-  color: #3366cc;
+.button-inline {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
 }
-
-.topnav a {
-  color: inherit; 
-  text-decoration: none; 
-}
-
-.topnav a:visited {
-  color: inherit; /
-}
-
-.topnav a:hover {
-  text-decoration: none; 
-  color: inherit;
-}
-
 @media (min-width: 1024px) {
-  .content {
-    padding: 100px;
-  }
   .topnav {
     display: flex !important;
     justify-content: center;
@@ -235,7 +142,6 @@ button.primary:hover {
     margin: 0 auto; /* 중앙 정렬 */
     box-sizing: border-box;
   }
-
   .side-panel {
     display: none;
   }

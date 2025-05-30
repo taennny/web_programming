@@ -1,0 +1,213 @@
+.content {
+  padding: 20px 50px;
+  margin-right: 300px;
+  width: 1200px;
+}
+.content h2 {
+  padding-top: 50px;
+  text-align: center;
+}
+.summary-grid {
+  padding-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: flex-start;
+}
+
+.summary-grid .section {
+  flex: 1 1 340px;
+  width: 340px;
+  max-width: 340px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  margin: 0 auto 24px auto;
+}
+@media (min-width: 1024px) {
+  .topnav {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: static;
+    flex-direction: row !important;
+    background-color: transparent;
+    height: auto;
+    width: auto;
+  }
+  .topnav ul {
+    display: flex;
+    gap: 24px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .topnav li {
+    display: inline-block;
+  }
+
+  .topnav a {
+    color: white;
+    padding: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+  }
+  .hamburger {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .content {
+    padding: 50px 50px;
+    margin-right: 200px;
+  }
+  .side-panel {
+    display: none;
+  }
+  .topnav {
+    flex-direction: column;
+    align-items: flex-start;
+    position: fixed;
+    top: 80px;
+    right: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #2e2e2e;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .topnav ul {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .topnav li {
+    width: 100%;
+  }
+
+  .topnav a {
+    padding: 16px;
+    display: block;
+    width: 100%;
+  }
+
+  .hamburger {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .content {
+    padding: 30px 20px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .summary-box {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 24px;
+  }
+  .section {
+    max-width: 600px;
+    margin: 0 auto; /* ✅ 중앙 정렬 */
+    margin-bottom: 24px;
+  }
+
+  .horizontal-sections {
+    flex-direction: column;
+  }
+  .side-panel {
+    display: none;
+  }
+  .topnav {
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    padding: 20px 24px;
+    border-top: 1px solid #ccc;
+  }
+
+  .topnav.active {
+    display: flex;
+  }
+
+  .topnav ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .topnav li {
+    margin: 16px 0;
+  }
+
+  .topnav a {
+    display: block; /* ✅ a 태그를 블록 요소로 만들어 줄 전체 너비 확보 */
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000 !important;
+    text-decoration: none;
+    padding: 8px 0;
+  }
+
+  .topnav a:hover {
+    color: #181818;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+    z-index: 1100;
+  }
+}
+
+.section h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.card {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.summary-table th,
+.summary-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+.link-button {
+  margin-top: 8px;
+  display: inline-block;
+  padding: 6px 12px;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+}

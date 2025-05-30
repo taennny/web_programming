@@ -5,86 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MeetMate - 회의 장소</title>
     <script
-      async
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnAjSAFmvjN1cMI8DHKqz6kht2nLA4kys&libraries=places&callback=initMap"
-    ></script>
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnAjSAFmvjN1cMI8DHKqz6kht2nLA4kys&libraries=places&callback=initMap"
+  async defer
+></script>
     <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Map.css">
     <script src="meetmate.js"></script>
-    <style>
-      .content {
-        align-items: center;
-        justify-content: center;
-        top: 100px;
-        flex: 1;
-        padding: 48px;
-        max-width: 800px;
-        margin-right: 315px;
-        min-height: calc(100vh - 80px);
-      }
-      .main-container {
-        display: flex;
-        justify-content: center;
-      }
-
-      .content h2 {
-        font-size: 22px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        text-align: center;
-      }
-
-      .intro {
-        text-align: center;
-        font-size: 15px;
-        color: #666;
-        margin-bottom: 32px;
-      }
-
-      .meeting-card {
-        text-align: center;
-        background: #fff;
-        border-radius: 12px;
-        padding: 30px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      }
-
-      .meeting-option label {
-        margin-right: 16px;
-        font-size: 16px;
-      }
-
-      #map {
-        width: 100%;
-        height: 400px;
-        margin-top: 16px;
-        display: none;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-      }
-
-      .zoom-actions {
-        display: none;
-        margin-top: 16px;
-      }
-
-      .zoom-actions input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 8px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-      }
-
-      .tip-card {
-        background: #eaf4ff;
-        border-left: 4px solid #4f91ff;
-        padding: 16px;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #3366cc;
-        margin-top: 32px;
-      }
-    </style>
+    <script src="Map.js" defer></script>
   </head>
   <body>
     <header>
@@ -93,26 +20,18 @@
           >MeetMate</a
         >
       </h1>
-      <nav class="topnav">
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
         <ul>
-          <li>
-            <a href="group.html">일정 조율</a>
-          </li>
-          <li>
-            <a href="program.html">역할 분담</a>
-          </li>
-          <li class="active">
-            <a href="map.html">회의 장소</a>
-          </li>
-          <li>
-            <a href="file-share.html">자료 공유</a>
-          </li>
-          <li>
-            <a href="group-result.html">전체 요약</a>
-          </li>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
         </ul>
       </nav>
-      <div class="top-buttons" id="auth-buttons"></div>
+         <div style="width: 80px"></div>
     </header>
 
     <div class="main-container">
@@ -182,9 +101,6 @@
             </div>
           </div>
 
-          <div id="map">
-        </div>
-
         <div class="tip-card">
           <strong>📌 TIP</strong><br />
           - Zoom은 로그인 상태에서 이용하면 더 편리해요.<br />
@@ -204,235 +120,5 @@
         </div>
       </div>
     </div>
-
-    <script>
-      document
-        .querySelectorAll('input[name="meetingType"]')
-        .forEach((radio) => {
-          radio.addEventListener("change", function () {
-            const zoomBox = document.getElementById("zoomActions");
-            const mapEl = document.getElementById("map");
-
-            if (this.value === "online") {
-              zoomBox.style.display = "block";
-              mapEl.style.display = "none";
-              localStorage.setItem("meetingLocation", "💻 비대면 회의 (Zoom)");
-            } else {
-              zoomBox.style.display = "none";
-              mapEl.style.display = "block";
-              localStorage.setItem(
-                "meetingLocation",
-                "📍 대면 회의 (스터디카페)"
-              );
-              initMap();
-            }
-          });
-        });
-
-      // 지도 로딩
-      function initMap() {
-        const map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: 37.5665, lng: 126.978 },
-          zoom: 14,
-        });
-
-        const service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(
-          {
-            location: map.getCenter(),
-            radius: 1500,
-            keyword: "스터디카페",
-          },
-          (results, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-              results.forEach((place) => {
-                const marker = new google.maps.Marker({
-                  map,
-                  position: place.geometry.location,
-                  title: place.name,
-                });
-
-                marker.addListener("click", () => {
-                  const summary = `📍 ${place.name} - ${place.vicinity}`;
-                  localStorage.setItem("meetingLocation", summary);
-                  alert("회의 장소가 저장되었습니다:\n" + summary);
-                });
-              });
-            }
-          }
-        );
-      }
-
-      function openZoomCreation() {
-        window.open("https://zoom.us/start/videomeeting", "_blank");
-      }
-
-      function showJoinSection() {
-        document.getElementById("zoomJoinSection").style.display = "block";
-      }
-
-      function joinZoomMeeting() {
-        const link = document.getElementById("zoomJoinLink").value.trim();
-        if (!link.startsWith("http")) {
-          alert("유효한 Zoom 회의 링크를 입력해주세요.");
-          return;
-        }
-        const summary = "💻 Zoom 회의 링크: " + link;
-        localStorage.setItem("meetingLocation", summary);
-        alert("Zoom 링크가 저장되었습니다:\n" + summary);
-        window.open(link, "_blank");
-      }
-      const username = localStorage.getItem("user");
-      const topArea = document.getElementById("auth-buttons");
-
-      if (username && username !== "null") {
-        topArea.innerHTML = `
-      <span>${username}님 환영합니다</span>
-      <button onclick="logout()">로그아웃</button>
-    `;
-      } else {
-        topArea.innerHTML = `
-      <button onclick="window.location.href='login.html'">로그인</button>
-    `;
-      }
-
-      function logout() {
-        localStorage.removeItem("user");
-        location.reload();
-      }
-  // 전역 변수
-  let map;
-  let markers = [];
-  let service;
-
-  function initMapAndSearch(keyword = "스터디카페") {
-    const center = { lat: 37.5665, lng: 126.978 };
-    map = new google.maps.Map(document.getElementById("map"), {
-      center,
-      zoom: 14,
-    });
-
-    service = new google.maps.places.PlacesService(map);
-    searchPlaces(keyword);
-  }
-
-  function searchPlaces(keyword) {
-    if (!service) return;
-
-    const request = {
-      location: map.getCenter(),
-      radius: 1500,
-      keyword,
-    };
-
-    service.nearbySearch(request, (results, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        clearMarkers();
-        results.forEach((place) => {
-          const marker = new google.maps.Marker({
-            map,
-            position: place.geometry.location,
-            title: place.name,
-          });
-
-          marker.addListener("click", () => {
-            localStorage.setItem(
-              "selectedMeetingPlace",
-              JSON.stringify({
-                name: place.name,
-                address: place.vicinity || place.formatted_address,
-              })
-            );
-            alert(`${place.name} 장소가 저장되었습니다.`);
-          });
-
-          markers.push(marker);
-        });
-      }
-    });
-  }
-
-  function clearMarkers() {
-    markers.forEach((m) => m.setMap(null));
-    markers = [];
-  }
-
-  // 대면 선택 시 지도 보이기
-  function onSelectOfflineMeeting() {
-    document.getElementById("offline-options").style.display = "block";
-    initMapAndSearch();
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-  // "대면" 선택 시 지도 보이기
-  document
-    .getElementById("offline")
-    .addEventListener("change", onSelectOfflineMeeting);
-    document.getElementById("save-place-btn").addEventListener("click", () => {
-    if (selectedPlace) {
-      localStorage.setItem("selectedMeetingPlace", JSON.stringify(selectedPlace));
-      alert(`${selectedPlace.name}' 저장되었습니다!`);
-    }
-  });
-
-  // 엔터 입력 시 검색
-  document
-    .getElementById("place-input")
-    .addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        searchPlaces(e.target.value);
-      }
-    });
-
-  // 검색 버튼 클릭 시 검색
-  document
-    .getElementById("search-btn")
-    .addEventListener("click", () => {
-      const keyword = document.getElementById("place-input").value.trim();
-      if (keyword) searchPlaces(keyword);
-    });
-});
-let selectedPlace = null; // 현재 선택된 장소 저장용
-
-function searchPlaces(keyword) {
-  if (!service) return;
-
-  const request = {
-    location: map.getCenter(),
-    radius: 1500,
-    keyword,
-  };
-
-  service.nearbySearch(request, (results, status) => {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      clearMarkers();
-      results.forEach((place) => {
-        const marker = new google.maps.Marker({
-          map,
-          position: place.geometry.location,
-          title: place.name,
-        });
-
-        marker.addListener("click", () => {
-          selectedPlace = {
-            name: place.name,
-            address: place.vicinity || place.formatted_address,
-          };
-
-          // 상세 정보 표시
-          document.getElementById("place-name").textContent = selectedPlace.name;
-          document.getElementById("place-address").textContent = selectedPlace.address;
-          document.getElementById("place-details").style.display = "block";
-        });
-
-        markers.push(marker);
-      });
-    }
-  });
-}
-
-</script>
-
-
   </body>
 </html>

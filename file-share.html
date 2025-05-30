@@ -5,112 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MeetMate - 자료 공유</title>
     <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="File-Share.css">
     <script src="meetmate.js"></script>
-    <style>
-      .content {
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        padding: 48px;
-        max-width: 800px;
-        margin-right: 315px;
-        min-height: calc(100vh - 80px);
-      }
-      .main-container {
-        display: flex;
-        justify-content: center;
-      }
-      .content h2 {
-        text-align: center;
-      }
-      .material-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        padding: 16px;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .card-title {
-        font-weight: bold;
-        font-size: 16px;
-      }
-
-      .delete-btn {
-        background: none;
-        border: none;
-        font-size: 16px;
-        cursor: pointer;
-        color: #999;
-      }
-
-      .card-meta {
-        font-size: 13px;
-        color: #666;
-      }
-
-      .dday {
-        font-weight: bold;
-        color: #f36856;
-      }
-
-      .link-btn {
-        text-align: center;
-        display: inline-block;
-        background-color: #f8f9fa;
-        color: #333;
-        text-decoration: none;
-        padding: 8px 14px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 13px;
-        transition: all 0.2s ease;
-      }
-
-      .link-btn:hover {
-        background-color: #e9ecef;
-        border-color: #bbb;
-        color: #222;
-      }
-      .card-title-wrapper {
-        text-align: center;
-      }
-
-      .card-title {
-        margin: 0;
-        font-size: 16px;
-        font-weight: bold;
-      }
-
-      .card-desc {
-        font-size: 13px;
-        color: #555;
-        margin: 0;
-      }
-      .drive-upload-btn {
-        padding: 4px 8px;
-        font-size: 11px;
-        font-weight: bold;
-        border-radius: 6px;
-        background-color: #f1f3f5;
-        border: 1px solid #ccc;
-        transition: all 0.2s;
-        text-decoration: none;
-        color: #333;
-      }
-      .drive-upload-btn:hover {
-        background-color: #e2e6ea;
-      }
-    </style>
+    <script src="File-Share.js" defer></script>
   </head>
   <body>
     <header>
@@ -119,26 +16,18 @@
           >MeetMate</a
         >
       </h1>
-      <nav class="topnav">
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
         <ul>
-          <li>
-            <a href="group.html">일정 조율</a>
-          </li>
-          <li>
-            <a href="program.html">역할 분담</a>
-          </li>
-          <li>
-            <a href="map.html">회의 장소</a>
-          </li>
-          <li class="active">
-            <a href="file-share.html">자료 공유</a>
-          </li>
-          <li>
-            <a href="group-result.html">전체 요약</a>
-          </li>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
         </ul>
       </nav>
-      <div class="top-buttons" id="auth-buttons">
+      <div style="width: 80px"></div>
         <!-- 동적으로 내용 삽입됨 -->
       </div>
     </header>
@@ -334,6 +223,25 @@
         localStorage.removeItem("user");
         location.reload();
       }
+      function toggleMenu() {
+        const menu = document.getElementById("dropdownMenu");
+        menu.classList.toggle("active");
+      }
+
+      // 창이 커질 때 active 클래스 제거 (메뉴 고정용)
+      window.addEventListener("resize", () => {
+        const menu = document.getElementById("dropdownMenu");
+        if (window.innerWidth >= 768) {
+          menu.classList.remove("active");
+        }
+      });
+      document.querySelectorAll(".topnav a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth < 768) {
+            document.getElementById("dropdownMenu").classList.remove("active");
+          }
+        });
+      });
     </script>
   </body>
 </html>

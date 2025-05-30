@@ -5,58 +5,9 @@
     <title>MeetMate 시간 조율</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Group-Schedule.css" />
     <script src="meetmate.js"></script>
-    <style>
-      .content {
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-        padding: 15px;
-        max-width: 800px;
-        margin-right: 315px;
-        min-height: calc(100vh - 80px);
-      }
-      .main-container {
-        display: flex;
-        justify-content: center;
-      }
-      .schedule-grid {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-      }
-      .row {
-        display: flex;
-      }
-      .row div {
-        width: 60px;
-        height: 36px;
-        border: 1px solid #ccc;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 13px;
-      }
-      .cell {
-        cursor: pointer;
-        background-color: #f5f5f5;
-      }
-      .cell:hover {
-        background-color: #e0e0e0;
-      }
-      .cell.selected {
-        background-color: #80d68a;
-      }
-      .time-col {
-        font-weight: bold;
-        background-color: #f0f0f0;
-      }
-      .day-header {
-        background-color: #f0f0f0;
-        font-weight: bold;
-      }
-    </style>
+    <script src="Group-Schedule.js" defer></script>
   </head>
   <body>
     <header>
@@ -65,32 +16,22 @@
           >MeetMate</a
         >
       </h1>
-      <nav class="topnav">
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
         <ul>
-          <li class="active">
-            <a href="group.html">일정 조율</a>
-          </li>
-          <li>
-            <a href="program.html">역할 분담</a>
-          </li>
-          <li>
-            <a href="map.html">회의 장소</a>
-          </li>
-          <li>
-            <a href="file-share.html">자료 공유</a>
-          </li>
-          <li>
-            <a href="group-result.html">전체 요약</a>
-          </li>
+          <li><a href="group.html">일정 조율</a></li>
+          <li><a href="program.html">역할 분담</a></li>
+          <li><a href="map.html">회의 장소</a></li>
+          <li><a href="file-share.html">자료 공유</a></li>
+          <li><a href="group-result.html">전체 요약</a></li>
         </ul>
       </nav>
-      <div class="top-buttons" id="auth-buttons">
-        <!-- 동적으로 내용 삽입됨 -->
-      </div>
+      <div style="width: 80px"></div>
     </header>
     <div class="main-container">
       <div class="content">
-        <h2 style="text-align: center">🕓 그룹 시간 선택</h2>
+        <h2 style="text-align: center">그룹 시간 선택</h2>
         <p style="text-align: center">
           그룹 코드: <strong>13sd4a1</strong> | 참여자: <strong>강태윤</strong>
         </p>
@@ -124,190 +65,5 @@
         </div>
       </div>
     </div>
-
-    <script>
-      const grid = document.getElementById("schedule-grid");
-      const days = ["일", "월", "화", "수", "목", "금", "토"];
-      for (let hour = 9; hour <= 22; hour++) {
-        const row = document.createElement("div");
-        row.className = "row";
-        const time = `${hour.toString().padStart(2, "0")}:00`;
-        row.innerHTML =
-          `<div class="time-col">${time}</div>` +
-          days
-            .map(
-              (day) =>
-                `<div class="cell" data-day="${day}" data-time="${time}"></div>`
-            )
-            .join("");
-        grid.appendChild(row);
-      }
-
-      document.addEventListener("click", function (e) {
-        if (e.target.classList.contains("cell")) {
-          e.target.classList.toggle("selected");
-        }
-      });
-
-      function submitSelection() {
-        const selected = [...document.querySelectorAll(".cell.selected")].map(
-          (cell) => ({
-            day: cell.dataset.day,
-            time: cell.dataset.time,
-          })
-        );
-
-        if (selected.length === 0) {
-          alert("하나 이상의 시간을 선택해주세요.");
-          return;
-        }
-
-        localStorage.setItem("selectedTime", JSON.stringify(selected));
-
-        const params = new URLSearchParams(location.search);
-        const code = params.get("code");
-        const user = params.get("user");
-
-        if (!code || !user) {
-          alert("그룹 코드 또는 사용자 정보가 누락되었습니다.");
-          return;
-        }
-
-        location.href = `group-schedule-result.html?code=${code}&user=${encodeURIComponent(
-          user
-        )}`;
-      }
-
-      function toggleDarkMode() {
-        document.body.classList.toggle("dark");
-      }
-
-      function settings() {
-        alert("설정 페이지로 이동합니다.");
-      }
-      function saveSelectionToLocal() {
-        const selected = [...document.querySelectorAll(".cell.selected")].map(
-          (cell) => ({
-            day: cell.dataset.day,
-            time: cell.dataset.time,
-          })
-        );
-
-        if (selected.length === 0) {
-          alert("하나 이상의 시간을 선택해주세요.");
-          return;
-        }
-
-        const params = new URLSearchParams(location.search);
-        const code = params.get("code") || "default";
-        const username = localStorage.getItem("user");
-
-        if (!username) {
-          alert("로그인 정보가 없습니다.");
-          return;
-        }
-
-        localStorage.setItem(
-          `selectedTime_${username}`,
-          JSON.stringify(selected)
-        );
-
-        // 그룹 멤버 관리
-        const groupKey = `group_${code}`;
-        const members = JSON.parse(localStorage.getItem(groupKey) || "[]");
-        if (!members.includes(username)) {
-          members.push(username);
-          localStorage.setItem(groupKey, JSON.stringify(members));
-        }
-
-        // 이동
-        window.location.href = `group-schedule-result.html?code=${code}&user=${encodeURIComponent(
-          username
-        )}`;
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const params = new URLSearchParams(location.search);
-        const code =
-          params.get("code") || localStorage.getItem("groupCode") || "default";
-        const username = localStorage.getItem("user") || "";
-        const groupKey = `group_${code}`;
-        const members = JSON.parse(localStorage.getItem(groupKey) || []);
-        const selections = members.map((name) =>
-          JSON.parse(localStorage.getItem(`selectedTime_${name}`) || "[]")
-        );
-
-        const countMap = {};
-        selections.forEach((sel) => {
-          sel.forEach(({ day, time }) => {
-            const key = `${day}-${time}`;
-            countMap[key] = (countMap[key] || 0) + 1;
-          });
-        });
-
-        const max = Math.max(...Object.values(countMap));
-        const bestSlots = [];
-        const grid = document.getElementById("schedule-grid");
-        const days = ["일", "월", "화", "수", "목", "금", "토"];
-
-        for (let hour = 9; hour <= 22; hour++) {
-          const time = `${hour.toString().padStart(2, "0")}:00`;
-          const row = document.createElement("div");
-          row.className = "row";
-          row.innerHTML = `<div class="time-col">${time}</div>`;
-
-          for (const day of days) {
-            const cell = document.createElement("div");
-            const key = `${day}-${time}`;
-
-            const mySel = JSON.parse(
-              localStorage.getItem(`selectedTime_${username}`) || "[]"
-            );
-            const isMine = mySel.some((s) => s.day === day && s.time === time);
-
-            if (isMine) {
-              cell.classList.add("cell", "my-selection");
-            } else if (countMap[key]) {
-              cell.classList.add("cell", "others-selection");
-            } else {
-              cell.classList.add("cell");
-            }
-
-            if (countMap[key] === max && max > 1) {
-              cell.classList.add("recommended");
-              bestSlots.push(`${day} ${time}`);
-            }
-
-            row.appendChild(cell);
-          }
-
-          grid.appendChild(row);
-        }
-
-        const recText = document.getElementById("recommendation");
-        recText.textContent =
-          bestSlots.length > 0
-            ? `추천 시간대: ${bestSlots.join(", ")}`
-            : `아직 겹치는 시간이 부족합니다.`;
-      });
-      const username = localStorage.getItem("user");
-      const topArea = document.getElementById("auth-buttons");
-
-      if (username && username !== "null") {
-        topArea.innerHTML = `
-              <span>${username}님 환영합니다</span>
-              <button onclick="logout()">로그아웃</button>
-            `;
-      } else {
-        topArea.innerHTML = `
-              <button onclick="window.location.href='login.html'">로그인</button>
-            `;
-      }
-
-      function logout() {
-        localStorage.removeItem("user");
-        location.reload();
-      }
-    </script>
   </body>
 </html>

@@ -18,16 +18,6 @@ function updateTime() {
     "🕒 현재 시간: " + now.toLocaleTimeString();
 }
 
-//다크모드 토글
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
-}
-
-//설정 버튼 클릭
-function settings() {
-  alert("설정 기능은 추후 추가될 예정입니다.");
-}
-
 //초기 실행
 document.addEventListener("DOMContentLoaded", () => {
   updateDate();

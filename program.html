@@ -4,71 +4,9 @@
     <meta charset="UTF-8" />
     <title>역할 분담</title>
     <link rel="stylesheet" href="meetmate.css" />
+    <link rel="stylesheet" href="Program.css">
     <script src="meetmate.js"></script>
-    <style>
-      .content {
-        align-items: center;
-        justify-content: center;
-        max-width: 800px;
-        margin-right: 315px;
-        min-height: calc(100vh - 80px);
-        padding: 50px;
-      }
-      .main-container {
-        display: flex;
-        justify-content: center;
-      }
-      .section-header {
-        text-align: center;
-      }
-      .table-wrapper {
-        display: flex;
-        justify-content: center;
-      }
-      .role-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 32px;
-      }
-      .role-table th,
-      .role-table td {
-        border: 1px solid #ccc;
-        padding: 12px;
-        text-align: left;
-        vertical-align: top;
-      }
-      .role-table input[type="text"],
-      .role-table input[type="date"] {
-        padding: 6px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-      .todo-list {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .todo-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .todo-item input[type="text"] {
-        flex: 1;
-      }
-      .add-todo-btn,
-      .add-row-btn {
-        margin-top: 8px;
-        padding: 6px 12px;
-        font-size: 12px;
-        cursor: pointer;
-      }
-      .button-inline {
-        display: flex;
-        gap: 8px;
-        padding-top: 10px;
-      }
-    </style>
+    <script src="Program.js" defer></script>
   </head>
   <body>
     <header>
@@ -77,18 +15,18 @@
           >MeetMate</a
         >
       </h1>
-      <nav class="topnav">
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+      <nav class="topnav" id="dropdownMenu">
         <ul>
           <li><a href="group.html">일정 조율</a></li>
-          <li class="active"><a href="program.html">역할 분담</a></li>
+          <li><a href="program.html">역할 분담</a></li>
           <li><a href="map.html">회의 장소</a></li>
           <li><a href="file-share.html">자료 공유</a></li>
           <li><a href="group-result.html">전체 요약</a></li>
         </ul>
       </nav>
-      <div class="top-buttons" id="auth-buttons">
-        <!-- 동적으로 내용 삽입됨 -->
-      </div>
+      <div style="width: 80px"></div>
     </header>
 
     <div class="main-container">
@@ -146,7 +84,7 @@
             </tfoot>
           </table>
         </div>
-
+      </div>
       <div class="side-panel">
         <div class="card">
           <div id="today-date">📅 오늘 날짜:</div>
@@ -156,153 +94,5 @@
           🩶 오늘도 좋은 하루 되세요!<br />함께하는 일정은 더 소중해요.
         </div>
       </div>
-    </div>
-
-    <script>
-      function updateTodoDday(input) {
-        const date = new Date(input.value);
-        const today = new Date();
-        const diff = Math.ceil((date - today) / (1000 * 60 * 60 * 24));
-        const dday = diff >= 0 ? `D-${diff}` : `D+${Math.abs(diff)}`;
-        input.nextElementSibling.textContent = dday;
-      }
-
-      function addRow() {
-        const tbody = document.querySelector("#role-table tbody");
-        const row = document.createElement("tr");
-        row.innerHTML = `
-        <td><input type="text" placeholder="팀원 이름" /></td>
-        <td><input type="text" placeholder="역할 입력" /></td>
-        <td>
-          <div class="todo-list">
-            <div class="todo-item">
-              <input type="checkbox" />
-              <input type="text" placeholder="작업 내용" />
-              <input type="date" onchange="updateTodoDday(this)" />
-              <span class="todo-dday"></span>
-            </div>
-          </div>
-          <button class="add-todo-btn" onclick="addTodo(this)">+ 할 일 추가</button>
-        </td>
-        <td><input type="text" placeholder="메모를 입력하세요" /></td>
-        
-      `;
-        tbody.appendChild(row);
-      }
-
-      function addTodo(button) {
-        const list = button.previousElementSibling;
-        const item = document.createElement("div");
-        item.className = "todo-item";
-        item.innerHTML = `
-        <input type="checkbox" />
-        <input type="text" placeholder="작업 내용" />
-        <input type="date" onchange="updateTodoDday(this)" />
-        <span class="todo-dday"></span>
-      `;
-        list.appendChild(item);
-      }
-
-      function extractRoleSummaryFromInputs() {
-        const table = document.querySelector("#role-table");
-        const rows = table.querySelectorAll("tbody tr");
-        const data = [];
-
-        rows.forEach((row) => {
-          const name = row.querySelector("td:nth-child(1) input")?.value || "";
-          const role = row.querySelector("td:nth-child(2) input")?.value || "";
-          const todos = row.querySelectorAll(".todo-item");
-          const memo = row.querySelector("td:nth-child(4) input")?.value || "";
-
-          todos.forEach((todo) => {
-            const task = todo.querySelector('input[type="text"]')?.value || "";
-            const date = todo.querySelector('input[type="date"]')?.value || "";
-            data.push({ team: name, role, task, dday: date, memo });
-          });
-        });
-
-        localStorage.setItem("roleSummary", JSON.stringify(data));
-        alert("역할 분담이 저장되었습니다.");
-      }
-      function groupByPersonAndRole(data) {
-        const grouped = {};
-        data.forEach((item) => {
-          const key = `${item.team}__${item.role}__${item.memo || ""}`;
-          if (!grouped[key]) grouped[key] = [];
-          grouped[key].push({ task: item.task, dday: item.dday });
-        });
-        return grouped;
-      }
-
-      function loadSavedRoles() {
-        const data = JSON.parse(localStorage.getItem("roleSummary") || "[]");
-        const tbody = document.querySelector("#role-table tbody");
-        if (!tbody || data.length === 0) return;
-
-        tbody.innerHTML = "";
-
-        const grouped = groupByPersonAndRole(data);
-        Object.entries(grouped).forEach(([key, todos]) => {
-          const [team, role, memo] = key.split("__");
-          const tr = document.createElement("tr");
-          const todoItemsHtml = todos
-            .map(
-              (t) => `
-        <div class="todo-item">
-          <input type="checkbox" />
-          <input type="text" value="${t.task}" />
-          <input type="date" value="${t.dday}" />
-        </div>`
-            )
-            .join("");
-
-          tr.innerHTML = `
-        <td><input type="text" value="${team}" /></td>
-        <td><input type="text" value="${role}" /></td>
-        <td>
-          <div class="todo-list">${todoItemsHtml}</div>
-          <button class="add-todo-btn" onclick="addTodo(this)">+ 할 일 추가</button>
-        </td>
-        <td><input type="text" value="${memo}" /></td>
-      `;
-          tbody.appendChild(tr);
-        });
-      }
-      const username = localStorage.getItem("user");
-      const topArea = document.getElementById("auth-buttons");
-
-      if (username && username !== "null") {
-        topArea.innerHTML = `
-      <span>${username}님 환영합니다</span>
-      <button onclick="logout()">로그아웃</button>
-    `;
-      } else {
-        topArea.innerHTML = `
-      <button onclick="window.location.href='login.html'">로그인</button>
-    `;
-      }
-
-      function logout() {
-        localStorage.removeItem("user");
-        location.reload();
-      }
-      document.addEventListener("DOMContentLoaded", loadSavedRoles);
-      let prevScroll = window.scrollY;
-      const header = document.querySelector("header");
-
-      window.addEventListener("scroll", () => {
-        const currentScroll = window.scrollY;
-
-        if (currentScroll > prevScroll) {
-          // 아래로 스크롤 시 숨김
-          header.style.top = "-60px";
-        } else {
-          // 위로 스크롤 시 다시 표시
-          header.style.top = "0";
-        }
-
-        prevScroll = currentScroll;
-      });
-    </script>
   </body>
 </html>
